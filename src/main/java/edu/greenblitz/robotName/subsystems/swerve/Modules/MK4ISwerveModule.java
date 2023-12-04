@@ -5,9 +5,11 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenixpro.hardware.CANcoder;
+import edu.greenblitz.robotName.subsystems.Battery;
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
 import edu.greenblitz.robotName.subsystems.swerve.SwerveModuleConfigObject;
 import edu.greenblitz.robotName.subsystems.swerve.constants.MK4iSwerveConstants;
+import edu.greenblitz.robotName.utils.Conversions;
 import edu.greenblitz.robotName.utils.motors.GBFalcon;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
@@ -43,15 +45,15 @@ public class MK4ISwerveModule implements ISwerveModule {
         }
 
         angularMotor = new GBFalcon(configObject.angleMotorID);
-        angularMotor.config(new GBFalcon.FalconConfObject(RobotMap.Swerve.SdsSwerve.baseAngConfObj));
+        angularMotor.config(new GBFalcon.FalconConfObject(MK4iSwerveConstants.baseAngConfObj));
 
         linearMotor = new GBFalcon(configObject.linearMotorID);
-        linearMotor.config(new GBFalcon.FalconConfObject(RobotMap.Swerve.SdsSwerve.baseLinConfObj).withInverted(configObject.linInverted));
+        linearMotor.config(new GBFalcon.FalconConfObject(MK4iSwerveConstants.baseLinConfObj).withInverted(configObject.linInverted));
 
         canCoder = new CANcoder(configObject.AbsoluteEncoderID);
         this.encoderOffset = configObject.encoderOffset;
 
-        this.feedforward = new SimpleMotorFeedforward(RobotMap.Swerve.SdsSwerve.ks, RobotMap.Swerve.SdsSwerve.kv, RobotMap.Swerve.SdsSwerve.ka);
+        this.feedforward = new SimpleMotorFeedforward(MK4iSwerveConstants.ks, MK4iSwerveConstants.kv, MK4iSwerveConstants.ka);
     }
 
 
@@ -59,7 +61,7 @@ public class MK4ISwerveModule implements ISwerveModule {
     public void setLinearVelocity(double speed) {
         linearMotor.set(
                 TalonFXControlMode.Velocity,
-                speed / RobotMap.Swerve.SdsSwerve.linTicksToMetersPerSecond,
+                speed / MK4iSwerveConstants.linTicksToMetersPerSecond,
                 DemandType.ArbitraryFeedForward,
                 feedforward.calculate(speed) / Battery.getInstance().getCurrentVoltage());
 

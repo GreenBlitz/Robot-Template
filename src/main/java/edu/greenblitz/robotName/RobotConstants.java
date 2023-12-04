@@ -1,5 +1,9 @@
 package edu.greenblitz.robotName;
 
+import edu.wpi.first.math.geometry.Translation3d;
+
+import javax.swing.plaf.PanelUI;
+
 public class RobotConstants {
 	
 	public static final Robot.RobotType ROBOT_TYPE = Robot.RobotType.FRANKENSTEIN;
@@ -29,5 +33,17 @@ public class RobotConstants {
 		public static final double ROBOT_LENGTH_IN_METERS = 0.89;
 		public static final double BUMPER_LENGTH = 0.05;
 	}
-	
+
+	public static class SimulationConstants{
+		public static final double TIME_STEP = 0.02;
+		public static final double BATTERY_VOLTAGE = 12;
+		public static final double MAX_MOTOR_VOLTAGE = 12;
+
+		public static final Translation3d ARM_TO_ROBOT = new Translation3d(0,0,1.2);
+	}
+	public static class Joystick{
+		public static final int MAIN = 1;
+		public static final int SECOND = 0;
+
+	}
 }

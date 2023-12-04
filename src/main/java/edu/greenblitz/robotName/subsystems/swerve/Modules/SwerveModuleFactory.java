@@ -1,14 +1,14 @@
 package edu.greenblitz.robotName.subsystems.swerve.Modules;
 
-import edu.greenblitz.tobyDetermined.RobotMap;
-import edu.greenblitz.tobyDetermined.subsystems.swerve.Chassis.SwerveChassis;
+import edu.greenblitz.robotName.RobotConstants;
+import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
 
 public class SwerveModuleFactory {
 
 
     public static ISwerveModule create(SwerveChassis.Module module) {
 
-        switch (RobotMap.ROBOT_TYPE) {
+        switch (RobotConstants.ROBOT_TYPE) {
             case REPLAY:
                 return new ReplaySwerveModule();
             case FRANKENSTEIN:

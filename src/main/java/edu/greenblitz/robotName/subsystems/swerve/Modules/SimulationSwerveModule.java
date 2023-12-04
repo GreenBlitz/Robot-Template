@@ -1,9 +1,11 @@
 package edu.greenblitz.robotName.subsystems.swerve.Modules;
 
-import edu.greenblitz.tobyDetermined.RobotMap;
-import edu.greenblitz.tobyDetermined.subsystems.swerve.Chassis.SwerveChassis;
-import edu.greenblitz.tobyDetermined.subsystems.swerve.Modules.SwerveModuleInputsAutoLogged;
-import edu.greenblitz.utils.Conversions;
+
+import edu.greenblitz.robotName.RobotConstants;
+import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
+import edu.greenblitz.robotName.subsystems.swerve.constants.ChassisConstants;
+import edu.greenblitz.robotName.subsystems.swerve.constants.SimulationConstants;
+import edu.greenblitz.robotName.utils.Conversions;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -17,9 +19,9 @@ public class SimulationSwerveModule implements ISwerveModule {
     private SwerveModuleInputsAutoLogged lastInputs = new SwerveModuleInputsAutoLogged();
     private final SwerveChassis.Module module;
     private final PIDController angularController = new PIDController(
-            RobotMap.Swerve.SimulationSwerve.angularController.kP,
-            RobotMap.Swerve.SimulationSwerve.angularController.kI,
-            RobotMap.Swerve.SimulationSwerve.angularController.kD
+            SimulationConstants.angularController.kP,
+            SimulationConstants.angularController.kI,
+            SimulationConstants.angularController.kD
     );
 
     private double angularAppliedVoltage, linearAppliedVoltage;
@@ -28,22 +30,22 @@ public class SimulationSwerveModule implements ISwerveModule {
         this.module = module;
 
         this.linearMotor = new DCMotorSim(
-                DCMotor.getFalcon500(RobotMap.Swerve.Simulation.SIMULATION_LINEAR_MOTOR.NUMBER_OF_MOTORS),
-                RobotMap.Swerve.Simulation.SIMULATION_LINEAR_MOTOR.GEAR_RATIO,
-                RobotMap.Swerve.Simulation.SIMULATION_LINEAR_MOTOR.MOMENT_OF_INERTIA
+                DCMotor.getFalcon500(SimulationConstants.SIMULATION_LINEAR_MOTOR.NUMBER_OF_MOTORS),
+                SimulationConstants.SIMULATION_LINEAR_MOTOR.GEAR_RATIO,
+                SimulationConstants.SIMULATION_LINEAR_MOTOR.MOMENT_OF_INERTIA
                 );
         this.angularMotor = new DCMotorSim(
-                DCMotor.getFalcon500(RobotMap.Swerve.Simulation.SIMULATION_ANGULAR_MOTOR.NUMBER_OF_MOTORS),
-                RobotMap.Swerve.Simulation.SIMULATION_ANGULAR_MOTOR.GEAR_RATIO,
-                RobotMap.Swerve.Simulation.SIMULATION_ANGULAR_MOTOR.MOMENT_OF_INERTIA
+                DCMotor.getFalcon500(SimulationConstants.SIMULATION_ANGULAR_MOTOR.NUMBER_OF_MOTORS),
+                SimulationConstants.SIMULATION_ANGULAR_MOTOR.GEAR_RATIO,
+                SimulationConstants.SIMULATION_ANGULAR_MOTOR.MOMENT_OF_INERTIA
         );
     }
 
 
     @Override
     public void setLinearVelocity(double speed) {
-        final double power = speed / RobotMap.Swerve.MAX_VELOCITY;
-        final double voltage = power * RobotMap.SimulationConstants.BATTERY_VOLTAGE;
+        final double power = speed / ChassisConstants.MAX_VELOCITY;
+        final double voltage = power * RobotConstants.SimulationConstants.BATTERY_VOLTAGE;
         setLinearVoltage(voltage);
     }
 
@@ -77,8 +79,8 @@ public class SimulationSwerveModule implements ISwerveModule {
 
     @Override
     public void updateInputs(SwerveModuleInputsAutoLogged inputs) {
-        linearMotor.update(RobotMap.SimulationConstants.TIME_STEP);
-        angularMotor.update(RobotMap.SimulationConstants.TIME_STEP);
+        linearMotor.update(RobotConstants.SimulationConstants.TIME_STEP);
+        angularMotor.update(RobotConstants.SimulationConstants.TIME_STEP);
 
         inputs.linearVelocity = Conversions.MK4IConversions.convertRPMToMeterPerSecond(linearMotor.getAngularVelocityRPM()); // [m/s]
         inputs.angularVelocity = angularMotor.getAngularVelocityRadPerSec(); // [Rad/s]

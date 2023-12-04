@@ -1,7 +1,7 @@
 package edu.greenblitz.robotName.subsystems.Limelight;
 
-import edu.greenblitz.tobyDetermined.RobotMap;
-import edu.greenblitz.tobyDetermined.subsystems.GBSubsystem;
+import edu.greenblitz.robotName.VisionConstants;
+import edu.greenblitz.robotName.utils.GBSubsystem;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +18,7 @@ public class MultiLimelight extends GBSubsystem {
 
 	private MultiLimelight(){
 		limelights = new ArrayList<>();
-		for(String limelightName : RobotMap.Vision.LIMELIGHT_NAMES){
+		for(String limelightName : VisionConstants.LIMELIGHT_NAMES){
 			limelights.add(new Limelight(limelightName));
 		}
 	}

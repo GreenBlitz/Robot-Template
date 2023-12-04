@@ -1,7 +1,8 @@
 package edu.greenblitz.robotName.subsystems.Gyros;
 
-import edu.greenblitz.tobyDetermined.RobotMap;
-import edu.greenblitz.tobyDetermined.subsystems.swerve.Chassis.SwerveChassis;
+
+import edu.greenblitz.robotName.RobotConstants;
+import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
 
 public class SimulationGyro implements IGyro {
 
@@ -10,7 +11,7 @@ public class SimulationGyro implements IGyro {
     public void updateInputs(GyroInputsAutoLogged inputs) {
         inputs.roll = 0;
         inputs.pitch = 0;
-        inputs.yaw += SwerveChassis.getInstance().getChassisSpeeds().omegaRadiansPerSecond * RobotMap.SimulationConstants.TIME_STEP;
+        inputs.yaw += SwerveChassis.getInstance().getChassisSpeeds().omegaRadiansPerSecond * RobotConstants.SimulationConstants.TIME_STEP;
 
         lastInputs = inputs;
     }

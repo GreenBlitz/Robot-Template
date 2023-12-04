@@ -1,6 +1,5 @@
 package edu.greenblitz.robotName.subsystems.swerve.Modules;
 
-import edu.greenblitz.tobyDetermined.subsystems.swerve.Modules.SwerveModuleInputsAutoLogged;
 
 public interface ISwerveModule {
 

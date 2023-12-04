@@ -28,7 +28,7 @@ public class MK4iSwerveConstants {
 	public static final double magEncoderTicksToFalconTicks = 2 * Math.PI / angleTicksToRadians;
 	
 	public static final PIDObject angPID = new PIDObject().withKp(0.05).withMaxPower(1.0).withFF(0);//.withKd(10).withMaxPower(0.8);
-	public static final GBFalcon.FalconConfObject baseAngConfObj = new GBFalcon.FalconConfObject().withNeutralMode(NeutralMode.Brake).withCurrentLimit(30).withRampRate(RobotMap.General.RAMP_RATE_VAL).withInverted(true).withPID(angPID);
+	public static final GBFalcon.FalconConfObject baseAngConfObj = new GBFalcon.FalconConfObject().withNeutralMode(NeutralMode.Brake).withCurrentLimit(30).withRampRate(RobotConstants.General.RAMP_RATE_VAL).withInverted(true).withPID(angPID);
 	
 	public static final PIDObject linPID = new PIDObject().withKp(0.0003).withMaxPower(0.5);
 	public static final GBFalcon.FalconConfObject baseLinConfObj = new GBFalcon.FalconConfObject()
