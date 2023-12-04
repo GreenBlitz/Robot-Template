@@ -1,5 +1,6 @@
 package edu.greenblitz.robotName.subsystems.Limelight;
 
+import edu.greenblitz.robotName.utils.FMSUtils;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,7 +24,7 @@ class Limelight {
     }
     
     public void updateRobotPoseEntry(){
-        String robotPoseQuery = DriverStation.getAlliance() == DriverStation.Alliance.Red ? "botpose_wpired" : "botpose_wpiblue";
+        String robotPoseQuery = FMSUtils.getAlliance() == DriverStation.Alliance.Red ? "botpose_wpired" : "botpose_wpiblue";
         robotPoseEntry = NetworkTableInstance.getDefault().getTable(name).getEntry(robotPoseQuery);
     }
 
