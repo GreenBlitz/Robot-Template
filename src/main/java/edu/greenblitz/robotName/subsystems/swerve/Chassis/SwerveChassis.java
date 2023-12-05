@@ -93,23 +93,21 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 		backLeft.periodic();
 		backRight.periodic();
 
-		gyro.updateInputs(gyroInputs);
 		field.setRobotPose(getRobotPose());
 
+
+		gyro.updateInputs(gyroInputs);
 		updateInputs(ChassisInputs);
-		Logger.getInstance().processInputs("DriveTrain/Chassis", ChassisInputs);
-		Logger.getInstance().processInputs("DriveTrain/Gyro", gyroInputs);
+
+		Logger.recordOutput("DriveTrain/RobotPose", getRobotPose());
+		Logger.processInputs("DriveTrain/Chassis", ChassisInputs);
+		Logger.processInputs("DriveTrain/Gyro", gyroInputs);
 
 		updatePoseEstimationLimeLight();
 		updateOdometry();
 
 
-		Logger.getInstance().recordOutput("DriveTrain/SimPose2D", ChassisInputs.chassisPose);
-		Logger.getInstance().recordOutput("DriveTrain/TargetPose2D", ChassisInputs.chassisPose);
-
 		SmartDashboard.putData(getField());
-		SmartDashboard.putNumber("chassisAngle", gyro.getYaw());
-
 	}
 
 	public void resetAll(Pose2d pose) {
@@ -453,7 +451,6 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 
 	@Override
 	public void updateInputs(SwerveChassisInputsAutoLogged inputs) {
-		inputs.chassisPose = poseEstimator.getEstimatedPosition();
 		inputs.isVisionEnabled = doVision;
 		inputs.numberOfDetectedAprilTag = MultiLimelight.getInstance().getAllEstimates().size();
 		inputs.omegaRadiansPerSecond = getChassisSpeeds().omegaRadiansPerSecond;

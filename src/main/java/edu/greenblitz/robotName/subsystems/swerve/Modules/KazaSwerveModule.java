@@ -2,7 +2,6 @@ package edu.greenblitz.robotName.subsystems.swerve.Modules;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.greenblitz.robotName.RobotConstants;
 import edu.greenblitz.robotName.subsystems.swerve.Calibration;
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
 import edu.greenblitz.robotName.subsystems.swerve.SwerveModuleConfigObject;
@@ -37,16 +36,16 @@ public class KazaSwerveModule implements ISwerveModule{
 
         switch (module){
             case BACK_RIGHT:
-                configObject = KazaSwerveConstants.KazaModuleBackRight;
+                configObject = KazaSwerveConstants.KAZA_SWERVE_MODULE_BACK_RIGHT;
                 break;
             case BACK_LEFT:
-                configObject = KazaSwerveConstants.KazaModuleBackLeft;
+                configObject = KazaSwerveConstants.KAZA_SWERVE_MODULE_BACK_LEFT;
                 break;
             case FRONT_RIGHT:
-                configObject = KazaSwerveConstants.KazaModuleFrontRight;
+                configObject = KazaSwerveConstants.KAZA_SWERVE_MODULE_FRONT_RIGHT;
                 break;
             case FRONT_LEFT:
-                configObject = KazaSwerveConstants.KazaModuleFrontLeft;
+                configObject = KazaSwerveConstants.KAZA_SWERVE_MODULE_FRONT_LEFT;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid module");
@@ -58,13 +57,13 @@ public class KazaSwerveModule implements ISwerveModule{
         linInverted = configObject.linInverted;
 
         angleMotor = new GBSparkMax(angleMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        angleMotor.config(KazaSwerveConstants.baseAngConfObj);
+        angleMotor.config(KazaSwerveConstants.BASE_ANGULAR_MOTOR_CONFIG_OBJECT);
         angleMotor.getPIDController().setPositionPIDWrappingEnabled(true);
         angleMotor.getPIDController().setPositionPIDWrappingMaxInput(2* Math.PI);
         angleMotor.getPIDController().setPositionPIDWrappingMinInput(0);
 
         linearMotor = new GBSparkMax(linearMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        linearMotor.config(KazaSwerveConstants.baseLinConfObj.withInverted(linInverted));
+        linearMotor.config(KazaSwerveConstants.BASE_LINEAR_CONFIG_OBJECT.withInverted(linInverted));
 
         lamprey = new AnalogInput(lampreyID);
         lamprey.setAverageBits(KazaSwerveConstants.LAMPREY_AVERAGE_BITS);
@@ -128,7 +127,7 @@ public class KazaSwerveModule implements ISwerveModule{
         inputs.angularVoltage = angleMotor.getAppliedOutput();
 
         inputs.linearVelocity = Conversions.convertRPMToRadsPerSec(linearMotor.getEncoder().getVelocity() * KazaSwerveConstants.angleTicksToWheelToRPM);
-        inputs.angularVelocity = angleMotor.getEncoder().getVelocity() * KazaSwerveConstants.angleTicksToRadians;
+        inputs.angularVelocity = angleMotor.getEncoder().getVelocity();
 
         inputs.linearMetersPassed = linearMotor.getEncoder().getPosition();
         inputs.angularPositionInRads = angleMotor.getEncoder().getPosition();

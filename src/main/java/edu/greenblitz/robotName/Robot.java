@@ -1,5 +1,11 @@
 package edu.greenblitz.robotName;
 
+import edu.greenblitz.robotName.commands.swerve.MoveByJoysticks;
+import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -12,6 +18,11 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void robotInit() {
+        initializeLogger();
+
+        SwerveChassis.init();
+        SwerveChassis.getInstance().setDefaultCommand(new MoveByJoysticks(false));
+
         OI.getInstance();
         CommandScheduler.getInstance().enable();
     }
@@ -21,14 +32,14 @@ public class Robot extends LoggedRobot {
         CommandScheduler.getInstance().run();
     }
 
-    @Override
-    public void teleopInit(){
-    }
-    
     private void initializeLogger(){
-        
-        Logger logger = Logger.getInstance();
-        
+
+        NetworkTableInstance.getDefault()
+                .getStructTopic("RobotPose", Pose2d.struct).publish();
+
+        NetworkTableInstance.getDefault()
+                .getStructTopic("MechanismPoses", Pose3d.struct).publish();
+
         switch (RobotConstants.ROBOT_TYPE) {
             // Running on a real robot, log to a USB stick
             case FRANKENSTEIN:
