@@ -7,6 +7,7 @@ import edu.greenblitz.robotName.subsystems.swerve.constants.ChassisConstants;
 import edu.greenblitz.robotName.subsystems.swerve.constants.SimulationConstants;
 import edu.greenblitz.robotName.utils.Conversions;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
@@ -50,12 +51,8 @@ public class SimulationSwerveModule implements ISwerveModule {
     }
 
     @Override
-    public void rotateToAngle(double angleInRadians) {
-        double diff = Math.IEEEremainder(angleInRadians - lastInputs.angularPositionInRads, 2 * Math.PI);
-        diff -= diff > Math.PI ? 2 * Math.PI : 0;
-        angleInRadians = lastInputs.angularPositionInRads + diff;
-
-        angularController.setSetpoint(angleInRadians);
+    public void rotateToAngle(Rotation2d angle) {
+        angularController.setSetpoint(angle.getRadians());
         final double voltage = angularController.calculate(lastInputs.angularPositionInRads);
         setAngularVoltage(voltage);
     }
@@ -103,18 +100,18 @@ public class SimulationSwerveModule implements ISwerveModule {
 
     @Override
     public void setLinearIdleModeBrake(boolean isBrake) {
-        Logger.getInstance().recordOutput("DriveTrain/Module"+module.name(), "tried setting linear idleMode to " + (isBrake ? "Brake" : "Coast"));
+        Logger.recordOutput("DriveTrain/Module"+module.name(), "tried setting linear idleMode to " + (isBrake ? "Brake" : "Coast"));
 
     }
 
     @Override
     public void setAngularIdleModeBrake(boolean isBrake) {
-        Logger.getInstance().recordOutput("DriveTrain/Module"+module.name(), "tried setting angular idleMode to " + (isBrake ? "Brake" : "Coast"));
+        Logger.recordOutput("DriveTrain/Module"+module.name(), "tried setting angular idleMode to " + (isBrake ? "Brake" : "Coast"));
     }
 
     @Override
-    public void resetAngle(double angleInRads) {
-        Logger.getInstance().recordOutput("DriveTrain/Module"+module.name(), "tried setting the module angle to " + Units.radiansToDegrees(angleInRads));
+    public void resetAngle(Rotation2d angle) {
+        Logger.recordOutput("DriveTrain/Module"+module.name(), "tried setting the module angle to " + angle.getDegrees());
     }
 
 }

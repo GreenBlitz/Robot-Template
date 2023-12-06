@@ -45,9 +45,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 	private final SwerveChassisInputsAutoLogged ChassisInputs = new SwerveChassisInputsAutoLogged();
 	private final GyroInputsAutoLogged gyroInputs = new GyroInputsAutoLogged();
 
-	public SwerveChassis() {
-
-
+	public SwerveChassis(){
         this.frontLeft = new SwerveModule(Module.FRONT_LEFT);
         this.frontRight = new SwerveModule(Module.FRONT_RIGHT);
         this.backLeft = new SwerveModule(Module.BACK_LEFT);
@@ -145,10 +143,10 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 	 * resetting all the angle motor's encoders to 0
 	 */
 	public void resetEncodersByCalibrationRod() {
-		getModule(Module.FRONT_LEFT).resetEncoderToValue(0);
-		getModule(Module.FRONT_RIGHT).resetEncoderToValue(0);
-		getModule(Module.BACK_LEFT).resetEncoderToValue(0);
-		getModule(Module.BACK_RIGHT).resetEncoderToValue(0);
+		getModule(Module.FRONT_LEFT).resetEncoderToValue();
+		getModule(Module.FRONT_RIGHT).resetEncoderToValue();
+		getModule(Module.BACK_LEFT).resetEncoderToValue();
+		getModule(Module.BACK_RIGHT).resetEncoderToValue();
 	}
 
 	public void resetAllEncoders() {
@@ -159,19 +157,11 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 
 	}
 
-	/**
-	 * get the absolute encoder value of a specific module
-	 */
+
 	public double getModuleAbsoluteEncoderValue(Module module) {
 		return getModule(module).getAbsoluteEncoderValue();
 	}
 
-
-	/**
-	 * all code below is self-explanatory - well, after a long time It's maybe not self-explanatory
-	 * <p>
-	 * ALL IN RADIANS, NOT DEGREES
-	 */
 
 	public double getModuleAngle(Module module) {
 		return getModule(module).getModuleAngle();

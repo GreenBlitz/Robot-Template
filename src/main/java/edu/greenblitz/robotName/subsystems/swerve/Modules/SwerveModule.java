@@ -30,12 +30,11 @@ public class SwerveModule {
 
 
 
-    public void rotateToAngle(double angleInRads) {
-        double diff = Math.IEEEremainder(angleInRads - getModuleAngle(), 2 * Math.PI);
+    public void rotateToAngle(Rotation2d angle) {
+        double diff = Math.IEEEremainder(angle.getRadians() - getModuleAngle(), 2 * Math.PI);
         diff -= diff > Math.PI ? 2 * Math.PI : 0;
-        angleInRads = getModuleAngle() + diff;
-
-        swerveModule.rotateToAngle(angleInRads);
+        
+        swerveModule.rotateToAngle(Rotation2d.fromRadians(getModuleAngle() + diff));
     }
 
     public double getModuleAngle() {
@@ -54,22 +53,21 @@ public class SwerveModule {
         return new SwerveModulePosition(getCurrentMeters(), new Rotation2d(getModuleAngle()));
     }
 
-    public void resetEncoderToValue(double angleInRads) {
-        swerveModule.resetAngle(angleInRads);
+    public void resetEncoderToValue(Rotation2d angle) {
+        swerveModule.resetAngle(angle);
     }
-
     public void resetEncoderToValue() {
-        resetEncoderToValue(0);
+        swerveModule.resetAngle(Rotation2d.fromRadians(0));
     }
 
     public void periodic() {
         swerveModule.updateInputs(swerveModuleInputs);
-        Logger.getInstance().processInputs("DriveTrain/Module" + this.module.toString(), swerveModuleInputs);
+        Logger.processInputs("DriveTrain/Module" + this.module.toString(), swerveModuleInputs);
     }
 
 
     public void resetEncoderByAbsoluteEncoder() {
-        resetEncoderToValue(swerveModuleInputs.absoluteEncoderPosition);
+        resetEncoderToValue(Rotation2d.fromRadians(swerveModuleInputs.absoluteEncoderPosition));
     }
 
     public void setLinSpeed(double speed) {
@@ -97,7 +95,7 @@ public class SwerveModule {
     }
     public void setModuleState(SwerveModuleState moduleState){
         setLinSpeed(moduleState.speedMetersPerSecond);
-        rotateToAngle(moduleState.angle.getRadians());
+        rotateToAngle(moduleState.angle);
     }
     public double getAbsoluteEncoderValue(){
         return swerveModuleInputs.absoluteEncoderPosition;

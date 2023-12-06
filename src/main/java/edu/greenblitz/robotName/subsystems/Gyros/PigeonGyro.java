@@ -4,7 +4,7 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 
 public class PigeonGyro implements IGyro {
 
-	private PigeonIMU pigeonIMU;
+	private final PigeonIMU pigeonIMU;
 	double yawOffset = 0.0;
 	double pitchOffset = 0.0;
 	double rollOffset = 0.0;
@@ -54,7 +54,7 @@ public class PigeonGyro implements IGyro {
 
 	@Override
 	public void updateInputs(GyroInputsAutoLogged inputs) {
-		inputs.yaw = -((Math.toRadians(pigeonIMU.getYaw()) - yawOffset)%(2* Math.PI));
+		inputs.yaw = ((Math.toRadians(pigeonIMU.getYaw()) - yawOffset)%(2* Math.PI));
 		inputs.pitch = ((Math.toRadians(pigeonIMU.getPitch()) - pitchOffset)%( 2 * Math.PI));
 		inputs.roll = ((Math.toRadians(pigeonIMU.getRoll()) - rollOffset)%(2* Math.PI));
 

@@ -24,7 +24,7 @@ public class KazaSwerveConstants {
 	public static final double LINEAR_MOTOR_POSITION_CONVERSION_FACTOR = RobotConstants.General.Motors.SPARKMAX_TICKS_PER_RADIAN * WHEEL_CIRCUMFERENCE / LIN_GEAR_RATIO / (2 * Math.PI);
 	public static final double angleTicksToWheelToRPM = RobotConstants.General.Motors.SPARKMAX_VELOCITY_UNITS_PER_RPM / ANG_GEAR_RATIO;
 	public static final double linTicksToMetersPerSecond = RobotConstants.General.Motors.SPARKMAX_VELOCITY_UNITS_PER_RPM * WHEEL_CIRCUMFERENCE / 60 / LIN_GEAR_RATIO;
-	public static final PIDObject LINEAR_PID = new PIDObject().withKp(0.0003).withMaxPower(0.5);
+	public static final PIDObject LINEAR_PID = new PIDObject().withKp(0.03).withMaxPower(0.5);
 	public static final GBSparkMax.SparkMaxConfObject BASE_LINEAR_CONFIG_OBJECT = new GBSparkMax.SparkMaxConfObject()
 			.withIdleMode(CANSparkMax.IdleMode.kBrake)
 			.withCurrentLimit(40)

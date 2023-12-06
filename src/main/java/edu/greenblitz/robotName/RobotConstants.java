@@ -6,7 +6,7 @@ import javax.swing.plaf.PanelUI;
 
 public class RobotConstants {
 	
-	public static final Robot.RobotType ROBOT_TYPE = Robot.RobotType.SIMULATION;
+	public static final Robot.RobotType ROBOT_TYPE = Robot.RobotType.PEGA_SWERVE;
 	public static final String SIMULATION_LOG_PATH = System.getProperty("user.home") + "\\Desktop\\SimulationLogs";
 	public static final String ROBORIO_LOG_PATH = "/media/sda1/";
 	

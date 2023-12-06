@@ -1,12 +1,14 @@
 package edu.greenblitz.robotName.subsystems.swerve.Modules;
 
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 public interface ISwerveModule {
 
     void setLinearVelocity(double speed);
 
 
-    void rotateToAngle(double angleInRadians);
+    void rotateToAngle(Rotation2d angle);
     void setLinearVoltage(double voltage);
      void setAngularVoltage(double voltage);
 
@@ -17,7 +19,7 @@ public interface ISwerveModule {
      void setAngularIdleModeBrake(boolean isBrake);
 
 
-     void resetAngle(double angleInRads);
+     void resetAngle(Rotation2d angleInRads);
 
 
 

@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenixpro.hardware.CANcoder;
+import com.ctre.phoenix.sensors.CANCoder;
 import edu.greenblitz.robotName.subsystems.Battery;
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
 import edu.greenblitz.robotName.subsystems.swerve.SwerveModuleConfigObject;
@@ -12,13 +12,14 @@ import edu.greenblitz.robotName.subsystems.swerve.constants.MK4iSwerveConstants;
 import edu.greenblitz.robotName.utils.Conversions;
 import edu.greenblitz.robotName.utils.motors.GBFalcon;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 
 public class MK4ISwerveModule implements ISwerveModule {
 
     private GBFalcon angularMotor;
     private GBFalcon linearMotor;
-    private CANcoder canCoder;
+    private CANCoder canCoder;
     private SimpleMotorFeedforward feedforward;
     private double encoderOffset;
 
@@ -50,7 +51,7 @@ public class MK4ISwerveModule implements ISwerveModule {
         linearMotor = new GBFalcon(configObject.linearMotorID);
         linearMotor.config(new GBFalcon.FalconConfObject(MK4iSwerveConstants.baseLinConfObj).withInverted(configObject.linInverted));
 
-        canCoder = new CANcoder(configObject.AbsoluteEncoderID);
+        canCoder = new CANCoder(configObject.AbsoluteEncoderID);
         this.encoderOffset = configObject.encoderOffset;
 
         this.feedforward = new SimpleMotorFeedforward(MK4iSwerveConstants.ks, MK4iSwerveConstants.kv, MK4iSwerveConstants.ka);
@@ -68,8 +69,8 @@ public class MK4ISwerveModule implements ISwerveModule {
     }
 
     @Override
-    public void rotateToAngle(double angleInRadians) {
-        angularMotor.set(ControlMode.Position, Conversions.MK4IConversions.convertRadsToTicks(angleInRadians));
+    public void rotateToAngle(Rotation2d angle) {
+        angularMotor.set(ControlMode.Position, Conversions.MK4IConversions.convertRadsToTicks(angle.getRadians()));
     }
 
     @Override
@@ -93,8 +94,8 @@ public class MK4ISwerveModule implements ISwerveModule {
     }
 
     @Override
-    public void resetAngle(double angleInRads) {
-        angularMotor.setSelectedSensorPosition(Conversions.MK4IConversions.convertRadsToTicks(angleInRads));
+    public void resetAngle(Rotation2d angle) {
+        angularMotor.setSelectedSensorPosition(Conversions.MK4IConversions.convertRadsToTicks(angle.getRadians()));
     }
 
     @Override
@@ -117,11 +118,11 @@ public class MK4ISwerveModule implements ISwerveModule {
         inputs.linearMetersPassed = Conversions.MK4IConversions.convertTicksToMeters(linearMotor.getSelectedSensorPosition());
         inputs.angularPositionInRads = Conversions.MK4IConversions.convertTicksToRads(angularMotor.getSelectedSensorPosition());
 
-        if (Double.isNaN(Units.degreesToRadians(canCoder.getAbsolutePosition().getValue()))){
+        if (Double.isNaN(Units.degreesToRadians(canCoder.getAbsolutePosition()))){
             inputs.absoluteEncoderPosition = 0;
         }else{
-            inputs.absoluteEncoderPosition = Units.degreesToRadians(canCoder.getAbsolutePosition().getValue()) - Units.rotationsToRadians(encoderOffset);
+            inputs.absoluteEncoderPosition = Units.degreesToRadians(canCoder.getAbsolutePosition()) - Units.rotationsToRadians(encoderOffset);
         }
-        inputs.isAbsoluteEncoderConnected = canCoder.getVersionMinor().getValue() != -1;
+        inputs.isAbsoluteEncoderConnected = canCoder.getFirmwareVersion() != -1;
     }
 }

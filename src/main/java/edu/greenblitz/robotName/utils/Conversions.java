@@ -4,10 +4,11 @@ package edu.greenblitz.robotName.utils;
 import edu.greenblitz.robotName.RobotConstants;
 import edu.greenblitz.robotName.subsystems.swerve.constants.MK4iSwerveConstants;
 
+
 public class Conversions {
 
     public static double convertRPMToRadsPerSec (double rpm){
-        return rpm * Math.PI / 30; //thats da formula dat i saw on stackoverflow - https://stackoverflow.com/questions/55562081/how-can-i-scale-a-velocity-value-from-native-units-ticks-per-100ms-to-meters-p
+        return rpm * 2 * Math.PI / 60;
     }
     public static double convertRPMToMeterPerSecond (double rpm, double wheelRadius){
         return (2 * Math.PI * wheelRadius) / 60 * rpm;

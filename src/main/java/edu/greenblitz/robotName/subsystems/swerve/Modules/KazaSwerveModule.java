@@ -9,14 +9,15 @@ import edu.greenblitz.robotName.subsystems.swerve.constants.KazaSwerveConstants;
 import edu.greenblitz.robotName.utils.Conversions;
 import edu.greenblitz.robotName.utils.motors.GBSparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 import static edu.greenblitz.robotName.RobotConstants.General.Motors.NEO_PHYSICAL_TICKS_TO_RADIANS;
 
 public class KazaSwerveModule implements ISwerveModule{
 
-    private double targetAngle;
-    private double targetVel;
+    private Rotation2d targetAngle;
+    private double targetVelocity;
     private GBSparkMax angleMotor;
     private GBSparkMax linearMotor;
     private AnalogInput lamprey;
@@ -79,9 +80,9 @@ public class KazaSwerveModule implements ISwerveModule{
     }
 
     @Override
-    public void rotateToAngle(double angleInRadians) {
-        angleMotor.getPIDController().setReference(angleInRadians, CANSparkMax.ControlType.kPosition);
-        targetAngle = angleInRadians;
+    public void rotateToAngle(Rotation2d angle) {
+        angleMotor.getPIDController().setReference(angle.getRadians(), CANSparkMax.ControlType.kPosition);
+        targetAngle = angle;
     }
 
     @Override
@@ -105,8 +106,8 @@ public class KazaSwerveModule implements ISwerveModule{
     }
 
     @Override
-    public void resetAngle(double angleInRads) {
-        angleMotor.getEncoder().setPosition(angleInRads);
+    public void resetAngle(Rotation2d angle) {
+        angleMotor.getEncoder().setPosition(angle.getRadians());
     }
 
     @Override
