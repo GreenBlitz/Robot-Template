@@ -163,12 +163,12 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 	}
 
 
-	public double getModuleAngle(Module module) {
+	public Rotation2d getModuleAngle(Module module) {
 		return getModule(module).getModuleAngle();
 	}
 
-	public boolean isModuleAtAngle(Module module, double targetAngleInRads, double errorInRads) {
-		return getModule(module).isAtAngle(targetAngleInRads, errorInRads);
+	public boolean isModuleAtAngle(Module module, Rotation2d angle, Rotation2d errorAngleTolerance) {
+		return getModule(module).isAtAngle(angle, errorAngleTolerance);
 	}
 
 	public void resetChassisPose() {
@@ -197,8 +197,8 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 		return new Rotation2d(gyro.getYaw());
 	}
 
-	public double getChassisAngle() {
-		return getRobotPose().getRotation().getRadians();
+	public Rotation2d getChassisAngle() {
+		return getRobotPose().getRotation();
 	}
 
 
@@ -207,21 +207,31 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 	 */
 	public void setModuleStates(SwerveModuleState[] states) {
 		setModuleStateForModule(Module.FRONT_LEFT,
-				SwerveModuleState.optimize(states[0], new Rotation2d(getModuleAngle(Module.FRONT_LEFT))));
+				SwerveModuleState.optimize(states[0], getModuleAngle(Module.FRONT_LEFT)));
 		setModuleStateForModule(Module.FRONT_RIGHT,
-				SwerveModuleState.optimize(states[1], new Rotation2d(getModuleAngle(Module.FRONT_RIGHT))));
+				SwerveModuleState.optimize(states[1], getModuleAngle(Module.FRONT_RIGHT)));
 		setModuleStateForModule(Module.BACK_LEFT,
-				SwerveModuleState.optimize(states[2], new Rotation2d(getModuleAngle(Module.BACK_LEFT))));
+				SwerveModuleState.optimize(states[2], getModuleAngle(Module.BACK_LEFT)));
 		setModuleStateForModule(Module.BACK_RIGHT,
-				SwerveModuleState.optimize(states[3], new Rotation2d(getModuleAngle(Module.BACK_RIGHT))));
+				SwerveModuleState.optimize(states[3], getModuleAngle(Module.BACK_RIGHT)));
 	}
 
-	public void moveByChassisSpeeds(double forwardSpeed, double leftwardSpeed, double angSpeed, double currentAng) {
+	public void moveByChassisSpeeds(double forwardSpeed, double leftwardSpeed, double angSpeed, Rotation2d currentAng) {
 		ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
 				forwardSpeed,
 				leftwardSpeed,
 				angSpeed,
-				Rotation2d.fromDegrees(Math.toDegrees(currentAng)));
+				currentAng
+		);
+		SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
+		SwerveModuleState[] desaturatedStates = desaturateSwerveModuleStates(states);
+		setModuleStates(desaturatedStates);
+	}
+	public void moveByChassisSpeeds(ChassisSpeeds fieldRelativeSpeeds, Rotation2d currentAng){
+		ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+				fieldRelativeSpeeds,
+				currentAng
+				);
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
 		SwerveModuleState[] desaturatedStates = desaturateSwerveModuleStates(states);
 		setModuleStates(desaturatedStates);
@@ -375,8 +385,8 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 		BACK_RIGHT
 	}
 
-	public boolean isModuleAtAngle(Module module, double errorInRads) {
-		return getModule(module).isAtAngle(errorInRads);
+	public boolean isModuleAtAngle(Module module, Rotation2d errorTolerance) {
+		return getModule(module).isAtAngle(errorTolerance);
 	}
 
 	public void resetChassisPose(Pose2d pose) {
@@ -389,7 +399,6 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 				chassisSpeeds.omegaRadiansPerSecond,
 				getChassisAngle()
 		);
-		SmartDashboard.putNumber("omega", chassisSpeeds.omegaRadiansPerSecond);
 	}
 
 	/**

@@ -15,7 +15,7 @@ public class SwerveModule {
 
     SwerveChassis.Module module;
 
-    public double targetAngle;
+    public Rotation2d targetAngle;
     public double targetVel;
 
     public SwerveModule(SwerveChassis.Module module) {
@@ -25,20 +25,19 @@ public class SwerveModule {
 
         swerveModuleInputs = new SwerveModuleInputsAutoLogged();
         this.periodic();
-        
     }
 
 
 
     public void rotateToAngle(Rotation2d angle) {
-        double diff = Math.IEEEremainder(angle.getRadians() - getModuleAngle(), 2 * Math.PI);
+        double diff = Math.IEEEremainder(angle.getRadians() - getModuleAngle().getRadians(), 2 * Math.PI);
         diff -= diff > Math.PI ? 2 * Math.PI : 0;
         
-        swerveModule.rotateToAngle(Rotation2d.fromRadians(getModuleAngle() + diff));
+        swerveModule.rotateToAngle(Rotation2d.fromRadians(getModuleAngle().getRadians() + diff));
     }
 
-    public double getModuleAngle() {
-        return swerveModuleInputs.angularPositionInRads;
+    public Rotation2d getModuleAngle() {
+        return Rotation2d.fromRadians(swerveModuleInputs.angularPositionInRads);
     }
 
     public double getCurrentVelocity() {
@@ -50,7 +49,7 @@ public class SwerveModule {
     }
 
     public SwerveModulePosition getCurrentPosition() {
-        return new SwerveModulePosition(getCurrentMeters(), new Rotation2d(getModuleAngle()));
+        return new SwerveModulePosition(getCurrentMeters(), getModuleAngle());
     }
 
     public void resetEncoderToValue(Rotation2d angle) {
@@ -81,17 +80,16 @@ public class SwerveModule {
     public SwerveModuleState getModuleState(){
         return new SwerveModuleState(
                 getCurrentVelocity(),
-                new Rotation2d(getModuleAngle())
+                getModuleAngle()
         );
     }
 
-    public boolean isAtAngle(double targetAngleInRads, double tolerance) {
-        double currentAngleInRads = getModuleAngle();
-        return (currentAngleInRads - targetAngleInRads) %(2*Math.PI) < tolerance
-                || (targetAngleInRads - currentAngleInRads) % (2*Math.PI) < tolerance;
+    public boolean isAtAngle(Rotation2d targetAngle, Rotation2d errorAngleTolerance) {
+        return (getModuleAngle().getRadians() - targetAngle.getRadians()) %(2*Math.PI) < errorAngleTolerance.getRadians()
+                || (targetAngle.getRadians() - getModuleAngle().getRadians()) % (2*Math.PI) < errorAngleTolerance.getRadians();
     }
-    public boolean isAtAngle (double errorInRads){
-        return isAtAngle(targetAngle, errorInRads);
+    public boolean isAtAngle (Rotation2d errorAngleTolerance){
+        return isAtAngle(targetAngle, errorAngleTolerance);
     }
     public void setModuleState(SwerveModuleState moduleState){
         setLinSpeed(moduleState.speedMetersPerSecond);
