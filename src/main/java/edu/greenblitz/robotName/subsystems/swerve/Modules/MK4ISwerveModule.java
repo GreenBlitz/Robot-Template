@@ -17,44 +17,33 @@ import edu.wpi.first.math.util.Units;
 
 public class MK4ISwerveModule implements ISwerveModule {
 
-    private GBFalcon angularMotor;
-    private GBFalcon linearMotor;
-    private CANCoder canCoder;
-    private SimpleMotorFeedforward feedforward;
-    private double encoderOffset;
+    private final GBFalcon angularMotor;
+    private final GBFalcon linearMotor;
+    private final CANCoder canCoder;
+    private final SimpleMotorFeedforward linearFeedForward;
+    private final double encoderOffset;
 
 
     public MK4ISwerveModule(SwerveChassis.Module module) {
 
-        SwerveModuleConfigObject configObject;
-        switch (module) {
-
-            case FRONT_LEFT:
-                configObject = MK4iSwerveConstants.SdsModuleFrontLeft;
-                break;
-            case FRONT_RIGHT:
-                configObject = MK4iSwerveConstants.SdsModuleFrontRight;
-                break;
-            case BACK_LEFT:
-                configObject = MK4iSwerveConstants.SdsModuleBackLeft;
-                break;
-            case BACK_RIGHT:
-                configObject = MK4iSwerveConstants.SdsModuleBackRight;
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid module");
-        }
+        SwerveModuleConfigObject configObject = switch (module) {
+            case FRONT_LEFT -> MK4iSwerveConstants.MK4I_MODULE_FRONT_LEFT;
+            case FRONT_RIGHT -> MK4iSwerveConstants.MK4I_MODULE_FRONT_RIGHT;
+            case BACK_LEFT -> MK4iSwerveConstants.MK4I_MODULE_BACK_LEFT;
+            case BACK_RIGHT -> MK4iSwerveConstants.MK4I_MODULE_BAK_RIGHT;
+            default -> throw new IllegalArgumentException("Invalid module");
+        };
 
         angularMotor = new GBFalcon(configObject.angleMotorID);
-        angularMotor.config(new GBFalcon.FalconConfObject(MK4iSwerveConstants.baseAngConfObj));
+        angularMotor.config(new GBFalcon.FalconConfObject(MK4iSwerveConstants.ANGULAR_FALCON_CONFIG_OBJECT));
 
         linearMotor = new GBFalcon(configObject.linearMotorID);
-        linearMotor.config(new GBFalcon.FalconConfObject(MK4iSwerveConstants.baseLinConfObj).withInverted(configObject.linInverted));
+        linearMotor.config(new GBFalcon.FalconConfObject(MK4iSwerveConstants.LINEAR_FALCON_CONF_OBJECT).withInverted(configObject.linInverted));
 
         canCoder = new CANCoder(configObject.AbsoluteEncoderID);
         this.encoderOffset = configObject.encoderOffset;
 
-        this.feedforward = new SimpleMotorFeedforward(MK4iSwerveConstants.ks, MK4iSwerveConstants.kv, MK4iSwerveConstants.ka);
+        this.linearFeedForward = new SimpleMotorFeedforward(MK4iSwerveConstants.ks, MK4iSwerveConstants.kv, MK4iSwerveConstants.ka);
     }
 
 
@@ -62,9 +51,9 @@ public class MK4ISwerveModule implements ISwerveModule {
     public void setLinearVelocity(double speed) {
         linearMotor.set(
                 TalonFXControlMode.Velocity,
-                speed / MK4iSwerveConstants.linTicksToMetersPerSecond,
+                speed / MK4iSwerveConstants.LIN_TICKS_TO_METERS_PER_SECOND,
                 DemandType.ArbitraryFeedForward,
-                feedforward.calculate(speed) / Battery.getInstance().getCurrentVoltage());
+                linearFeedForward.calculate(speed) / Battery.getInstance().getCurrentVoltage());
 
     }
 

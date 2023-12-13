@@ -290,7 +290,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 	 * for calibration purposes
 	 */
 	public void rotateModuleByPower(Module module, double power) {
-		getModule(module).setRotPowerOnlyForCalibrations(power);
+		getModule(module).setRotationalPower(power);
 	}
 
 	public void updatePoseEstimationPhotonVision() {
@@ -406,20 +406,20 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 	 */
 	public void setIdleModeBrake() {
 		for (Module module : Module.values()) {
-			getModule(module).setLinIdleModeBrake();
+			getModule(module).setLinearIdleModeBrake();
 		}
 	}
 
 	public void setIdleModeCoast() {
 		for (Module module : Module.values()) {
-			getModule(module).setLinIdleModeCoast();
+			getModule(module).setLinearIdleModeCoast();
 		}
 	}
 
 	public void setAngleMotorsIdleMode(CANSparkMax.IdleMode idleMode) {
 		if (idleMode == CANSparkMax.IdleMode.kBrake) {
 			for (Module module : Module.values()) {
-				getModule(module).setRotIdleModeBrake();
+				getModule(module).setAngularIdleModeBrake();
 			}
 		} else {
 			for (Module module : Module.values()) {

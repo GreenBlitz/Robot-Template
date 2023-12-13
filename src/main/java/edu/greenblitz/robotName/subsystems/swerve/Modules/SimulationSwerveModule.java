@@ -9,7 +9,6 @@ import edu.greenblitz.robotName.utils.Conversions;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import org.littletonrobotics.junction.Logger;
 
@@ -20,9 +19,9 @@ public class SimulationSwerveModule implements ISwerveModule {
     private SwerveModuleInputsAutoLogged lastInputs = new SwerveModuleInputsAutoLogged();
     private final SwerveChassis.Module module;
     private final PIDController angularController = new PIDController(
-            SimulationConstants.angularController.kP,
-            SimulationConstants.angularController.kI,
-            SimulationConstants.angularController.kD
+            SimulationConstants.ANGULAR_PID_CONSTANTS.kP,
+            SimulationConstants.ANGULAR_PID_CONSTANTS.kI,
+            SimulationConstants.ANGULAR_PID_CONSTANTS.kD
     );
 
     private double angularAppliedVoltage, linearAppliedVoltage;

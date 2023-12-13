@@ -24,19 +24,19 @@ public class Conversions {
             return revolutions * MK4iSwerveConstants.WHEEL_CIRC;
         }
         public static double convertRadsToTicks(double angInRads) {
-            return angInRads / MK4iSwerveConstants.angleTicksToRadians;
+            return angInRads / MK4iSwerveConstants.ANGLE_TICKS_TO_RADIANS;
         }
 
         public static double convertTicksToRads(double angInTicks) {
-            return angInTicks * MK4iSwerveConstants.angleTicksToRadians;
+            return angInTicks * MK4iSwerveConstants.ANGLE_TICKS_TO_RADIANS;
         }
 
         public static double convertMetersToTicks(double distanceInMeters) {
-            return distanceInMeters / MK4iSwerveConstants.linTicksToMeters;
+            return distanceInMeters / MK4iSwerveConstants.LIN_TICKS_TO_METERS;
         }
 
         public static double convertTicksToMeters(double angInTicks){
-            return angInTicks * MK4iSwerveConstants.linTicksToMeters;
+            return angInTicks * MK4iSwerveConstants.LIN_TICKS_TO_METERS;
         }
 
         public static double convertTicksPer100msToRPM(double ticksPer100ms){
@@ -44,13 +44,13 @@ public class Conversions {
         }
 
         public static double convertSensorVelocityToRPM(double ticks){
-            return ticks * MK4iSwerveConstants.angleTicksToWheelToRPM;
+            return ticks * MK4iSwerveConstants.ANGLE_TICKS_TO_WHEEL_TO_RPM;
         }
         public static double convertSensorTicksToRadPerSecond(double ticks){
             return convertRPMToRadsPerSec(convertSensorVelocityToRPM(ticks));
         }
         public static double convertSensorVelocityToMeterPerSecond(double selectedSensorVelocity){
-            return selectedSensorVelocity * MK4iSwerveConstants.linTicksToMetersPerSecond;
+            return selectedSensorVelocity * MK4iSwerveConstants.LIN_TICKS_TO_METERS_PER_SECOND;
         }
         public static double convertRPMToMeterPerSecond (double rpm){
             return Conversions.convertRPMToMeterPerSecond(rpm, MK4iSwerveConstants.WHEEL_CIRC / (2 * Math.PI));

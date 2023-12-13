@@ -27,12 +27,17 @@ public class SwerveModule {
         this.periodic();
     }
 
+    public void periodic() {
+        swerveModule.updateInputs(swerveModuleInputs);
+        Logger.processInputs("DriveTrain/Module" + this.module.toString(), swerveModuleInputs);
+    }
+
 
 
     public void rotateToAngle(Rotation2d angle) {
         double diff = Math.IEEEremainder(angle.getRadians() - getModuleAngle().getRadians(), 2 * Math.PI);
         diff -= diff > Math.PI ? 2 * Math.PI : 0;
-        
+
         swerveModule.rotateToAngle(Rotation2d.fromRadians(getModuleAngle().getRadians() + diff));
     }
 
@@ -51,17 +56,12 @@ public class SwerveModule {
     public SwerveModulePosition getCurrentPosition() {
         return new SwerveModulePosition(getCurrentMeters(), getModuleAngle());
     }
-
     public void resetEncoderToValue(Rotation2d angle) {
         swerveModule.resetAngle(angle);
     }
+
     public void resetEncoderToValue() {
         swerveModule.resetAngle(Rotation2d.fromRadians(0));
-    }
-
-    public void periodic() {
-        swerveModule.updateInputs(swerveModuleInputs);
-        Logger.processInputs("DriveTrain/Module" + this.module.toString(), swerveModuleInputs);
     }
 
 
@@ -103,19 +103,20 @@ public class SwerveModule {
         return swerveModuleInputs.linearCurrent;
     }
 
-    public void setRotPowerOnlyForCalibrations(double power){
+    public void setRotationalPower(double power){
         swerveModule.setAngularVoltage(power * Battery.getInstance().getCurrentVoltage());
     }
-    public void setLinPowerOnlyForCalibrations(double power){
+
+    public void setLinearPower(double power){
         swerveModule.setLinearVoltage(power * Battery.getInstance().getCurrentVoltage());
     }
-    public void setLinIdleModeBrake (){
+    public void setLinearIdleModeBrake(){
         swerveModule.setLinearIdleModeBrake(true);
     }
-    public void setLinIdleModeCoast (){
+    public void setLinearIdleModeCoast(){
         swerveModule.setLinearIdleModeBrake(false);
     }
-    public void setRotIdleModeBrake(){
+    public void setAngularIdleModeBrake(){
         swerveModule.setAngularIdleModeBrake(true);
 
     }
