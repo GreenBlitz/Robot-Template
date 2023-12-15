@@ -1,4 +1,4 @@
-package edu.greenblitz.robotName.subsystems.swerve;
+package edu.greenblitz.robotName.subsystems.swerve.Modules.kazaSwerveModule;
 
 
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;

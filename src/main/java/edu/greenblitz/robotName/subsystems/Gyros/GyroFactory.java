@@ -6,8 +6,7 @@ public class GyroFactory {
 
     public static IGyro create(){
         switch (RobotConstants.ROBOT_TYPE) {
-            case FRANKENSTEIN:
-            case PEGA_SWERVE:
+            case ROBOT_NAME:
                 return new PigeonGyro(GyroConstants.PigeonGyro.ID);
             case REPLAY:
                 return new ReplayGyro();

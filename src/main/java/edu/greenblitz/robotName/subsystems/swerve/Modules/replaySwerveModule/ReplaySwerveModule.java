@@ -1,9 +1,11 @@
-package edu.greenblitz.robotName.subsystems.swerve.Modules;
+package edu.greenblitz.robotName.subsystems.swerve.Modules.replaySwerveModule;
 
 
+import edu.greenblitz.robotName.subsystems.swerve.Modules.ISwerveModule;
+import edu.greenblitz.robotName.subsystems.swerve.Modules.SwerveModuleInputsAutoLogged;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-public class ReplaySwerveModule implements ISwerveModule{
+public class ReplaySwerveModule implements ISwerveModule {
     @Override
     public void setLinearVelocity(double speed) {
 

@@ -12,7 +12,7 @@ public class OI {
     private OI() {
         mainJoystick = new SmartJoystick(RobotConstants.Joystick.MAIN);
         secondJoystick = new SmartJoystick(RobotConstants.Joystick.SECOND);
-}
+    }
 
     public static OI getInstance() {
         if (instance == null) {

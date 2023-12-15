@@ -5,7 +5,6 @@ import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -43,8 +42,7 @@ public class Robot extends LoggedRobot {
 
         switch (RobotConstants.ROBOT_TYPE) {
             // Running on a real robot, log to a USB stick
-            case FRANKENSTEIN:
-            case PEGA_SWERVE:
+            case ROBOT_NAME:
                 Logger.addDataReceiver(new WPILOGWriter(RobotConstants.ROBORIO_LOG_PATH));
                 Logger.addDataReceiver(new NT4Publisher());
                 break;
@@ -65,8 +63,7 @@ public class Robot extends LoggedRobot {
     }
     
     public enum RobotType {
-        PEGA_SWERVE,
-        FRANKENSTEIN,
+        ROBOT_NAME,
         SIMULATION,
         REPLAY
     }

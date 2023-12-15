@@ -1,11 +1,11 @@
-package edu.greenblitz.robotName.subsystems.swerve.Modules;
+package edu.greenblitz.robotName.subsystems.swerve.Modules.kazaSwerveModule;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.greenblitz.robotName.subsystems.swerve.KazaSwerveLampreyInterpulationMaps;
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
+import edu.greenblitz.robotName.subsystems.swerve.Modules.ISwerveModule;
+import edu.greenblitz.robotName.subsystems.swerve.Modules.SwerveModuleInputsAutoLogged;
 import edu.greenblitz.robotName.subsystems.swerve.SwerveModuleConfigObject;
-import edu.greenblitz.robotName.subsystems.swerve.constants.KazaSwerveConstants;
 import edu.greenblitz.robotName.utils.Conversions;
 import edu.greenblitz.robotName.utils.motors.GBSparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 
 import static edu.greenblitz.robotName.RobotConstants.General.Motors.NEO_PHYSICAL_TICKS_TO_RADIANS;
 
-public class KazaSwerveModule implements ISwerveModule{
+public class KazaSwerveModule implements ISwerveModule {
 
     private final GBSparkMax angleMotor;
     private final GBSparkMax linearMotor;
@@ -104,7 +104,7 @@ public class KazaSwerveModule implements ISwerveModule{
 
     @Override
     public void updateInputs(SwerveModuleInputsAutoLogged inputs) {
-        inputs.absoluteEncoderPosition = KazaSwerveLampreyInterpulationMaps.CALIBRATION_DATASETS.get(module).get(lamprey.getVoltage()) * NEO_PHYSICAL_TICKS_TO_RADIANS/ KazaSwerveConstants.ANG_GEAR_RATIO;
+        inputs.absoluteEncoderPosition = KazaSwerveLampreyInterpulationMaps.CALIBRATION_DATASETS.get(module).get(lamprey.getVoltage()) * NEO_PHYSICAL_TICKS_TO_RADIANS/ KazaSwerveConstants.ANGULAR_GEAR_RATIO;
         inputs.isAbsoluteEncoderConnected = lamprey.getVoltage() != 0; //analog input returns 0;
 
         inputs.linearCurrent = linearMotor.getOutputCurrent();
@@ -113,7 +113,7 @@ public class KazaSwerveModule implements ISwerveModule{
         inputs.linearVoltage = linearMotor.getAppliedOutput();
         inputs.angularVoltage = angleMotor.getAppliedOutput();
 
-        inputs.linearVelocity = Conversions.convertRPMToRadsPerSec(linearMotor.getEncoder().getVelocity() * KazaSwerveConstants.angleTicksToWheelToRPM);
+        inputs.linearVelocity = Conversions.convertRPMToRadsPerSec(linearMotor.getEncoder().getVelocity() * KazaSwerveConstants.ANGULAR_TICKS_TO_WHEEL_TO_RPM);
         inputs.angularVelocity = angleMotor.getEncoder().getVelocity();
 
         inputs.linearMetersPassed = linearMotor.getEncoder().getPosition();

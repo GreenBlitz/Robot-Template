@@ -1,4 +1,4 @@
-package edu.greenblitz.robotName.subsystems.swerve.Modules;
+package edu.greenblitz.robotName.subsystems.swerve.Modules.mk4iSwerveModule;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -7,8 +7,9 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.sensors.CANCoder;
 import edu.greenblitz.robotName.subsystems.Battery;
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
+import edu.greenblitz.robotName.subsystems.swerve.Modules.ISwerveModule;
+import edu.greenblitz.robotName.subsystems.swerve.Modules.SwerveModuleInputsAutoLogged;
 import edu.greenblitz.robotName.subsystems.swerve.SwerveModuleConfigObject;
-import edu.greenblitz.robotName.subsystems.swerve.constants.MK4iSwerveConstants;
 import edu.greenblitz.robotName.utils.Conversions;
 import edu.greenblitz.robotName.utils.motors.GBFalcon;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -51,7 +52,7 @@ public class MK4ISwerveModule implements ISwerveModule {
     public void setLinearVelocity(double speed) {
         linearMotor.set(
                 TalonFXControlMode.Velocity,
-                speed / MK4iSwerveConstants.LIN_TICKS_TO_METERS_PER_SECOND,
+                speed / MK4iSwerveConstants.LINEAR_TICKS_TO_METERS_PER_SECOND,
                 DemandType.ArbitraryFeedForward,
                 linearFeedForward.calculate(speed) / Battery.getInstance().getCurrentVoltage());
 
