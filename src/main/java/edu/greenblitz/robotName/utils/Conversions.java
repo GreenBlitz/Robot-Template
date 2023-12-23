@@ -3,11 +3,12 @@ package edu.greenblitz.robotName.utils;
 
 import edu.greenblitz.robotName.RobotConstants;
 import edu.greenblitz.robotName.subsystems.swerve.Modules.mk4iSwerveModule.MK4iSwerveConstants;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 
 public class Conversions {
 
-    public static double convertRPMToRadsPerSec (double rpm){
+    public static double convertRPMToRadiansPerSec(double rpm){
         return rpm * 2 * Math.PI / 60;
     }
     public static double convertRPMToMeterPerSecond (double rpm, double wheelRadius){
@@ -23,11 +24,11 @@ public class Conversions {
         public static double revolutionsToMeters(double revolutions) {
             return revolutions * MK4iSwerveConstants.WHEEL_CIRC;
         }
-        public static double convertRadsToTicks(double angInRads) {
-            return angInRads / MK4iSwerveConstants.ANGLE_TICKS_TO_RADIANS;
+        public static double convertRadiansToTicks(Rotation2d angle) {
+            return angle.getRadians() / MK4iSwerveConstants.ANGLE_TICKS_TO_RADIANS;
         }
 
-        public static double convertTicksToRads(double angInTicks) {
+        public static double convertTicksToRadians(double angInTicks) {
             return angInTicks * MK4iSwerveConstants.ANGLE_TICKS_TO_RADIANS;
         }
 
@@ -47,7 +48,7 @@ public class Conversions {
             return ticks * MK4iSwerveConstants.ANGLE_TICKS_TO_WHEEL_TO_RPM;
         }
         public static double convertSensorTicksToRadPerSecond(double ticks){
-            return convertRPMToRadsPerSec(convertSensorVelocityToRPM(ticks));
+            return convertRPMToRadiansPerSec(convertSensorVelocityToRPM(ticks));
         }
         public static double convertSensorVelocityToMeterPerSecond(double selectedSensorVelocity){
             return selectedSensorVelocity * MK4iSwerveConstants.LINEAR_TICKS_TO_METERS_PER_SECOND;

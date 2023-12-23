@@ -8,8 +8,6 @@ public class ChassisConstants {
 
     static final Pose2d INITIAL_ROBOT_POSITION = new Pose2d(0, 0, new Rotation2d(0));
     public static final Translation2d[] SWERVE_LOCATIONS_IN_SWERVE_KINEMATICS_COORDINATES = new Translation2d[]{
-            //the WPILib coordinate system is stupid. (x is forwards, y is leftwards)
-            //the translations are given rotated by 90 degrees clockwise to avoid coordinates system conversion at output
             new Translation2d(0.3020647, 0.25265), /*fl*/
             new Translation2d(0.3020647, -0.25265),/*fr*/
             new Translation2d(-0.3020647, 0.25265),/*bl*/

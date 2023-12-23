@@ -113,11 +113,11 @@ public class KazaSwerveModule implements ISwerveModule {
         inputs.linearVoltage = linearMotor.getAppliedOutput();
         inputs.angularVoltage = angleMotor.getAppliedOutput();
 
-        inputs.linearVelocity = Conversions.convertRPMToRadsPerSec(linearMotor.getEncoder().getVelocity() * KazaSwerveConstants.ANGULAR_TICKS_TO_WHEEL_TO_RPM);
+        inputs.linearVelocity = Conversions.convertRPMToRadiansPerSec(linearMotor.getEncoder().getVelocity() * KazaSwerveConstants.ANGULAR_TICKS_TO_WHEEL_TO_RPM);
         inputs.angularVelocity = angleMotor.getEncoder().getVelocity();
 
         inputs.linearMetersPassed = linearMotor.getEncoder().getPosition();
-        inputs.angularPositionInRads = angleMotor.getEncoder().getPosition();
+        inputs.angularPositionRadians = angleMotor.getEncoder().getPosition();
 
 
     }

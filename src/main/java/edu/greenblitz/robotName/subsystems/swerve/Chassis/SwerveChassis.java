@@ -303,16 +303,16 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         }
     }
 
-    private boolean moduleStalling(SwerveModule module) {
+    private boolean isModuleAtFreeCurrent(SwerveModule module) {
         return module.getLinearCurrent() > MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT - CURRENT_TOLERANCE && module.getLinearCurrent() < CURRENT_TOLERANCE + MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT;
     }
 
     public boolean robotStalling() {
 
-        boolean frontLeft = moduleStalling(this.frontLeft);
-        boolean frontRight = moduleStalling(this.frontRight);
-        boolean backLeft = moduleStalling(this.backLeft);
-        boolean backRight = moduleStalling(this.backRight);
+        boolean frontLeft = isModuleAtFreeCurrent(this.frontLeft);
+        boolean frontRight = isModuleAtFreeCurrent(this.frontRight);
+        boolean backLeft = isModuleAtFreeCurrent(this.backLeft);
+        boolean backRight = isModuleAtFreeCurrent(this.backRight);
 
         return ((frontLeft && frontRight) || (backLeft && backRight) || (frontLeft && backLeft) || (backRight && frontRight) || (frontLeft && backRight) || (frontRight && backLeft));
     }
@@ -322,19 +322,19 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
     }
 
     public boolean getFrontLeftHasObstacles() {
-        return moduleStalling(frontLeft);
+        return isModuleAtFreeCurrent(frontLeft);
     }
 
     public boolean getFrontRightHasObstacles() {
-        return moduleStalling(frontRight);
+        return isModuleAtFreeCurrent(frontRight);
     }
 
     public boolean getBackLeftHasObstacles() {
-        return moduleStalling(backLeft);
+        return isModuleAtFreeCurrent(backLeft);
     }
 
     public boolean getBackRightHasObstacles() {
-        return moduleStalling(backRight);
+        return isModuleAtFreeCurrent(backRight);
     }
 
 
@@ -380,13 +380,6 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         return getModule(module).getModuleState();
     }
 
-
-    public enum Module {
-        FRONT_LEFT,
-        FRONT_RIGHT,
-        BACK_LEFT,
-        BACK_RIGHT
-    }
 
     public boolean isModuleAtAngle(Module module, Rotation2d errorTolerance) {
         return getModule(module).isAtAngle(errorTolerance);
@@ -460,6 +453,13 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         inputs.yAxisSpeed = getChassisSpeeds().vyMetersPerSecond;
 
     }
+    public enum Module {
+        FRONT_LEFT,
+        FRONT_RIGHT,
+        BACK_LEFT,
+        BACK_RIGHT
+    }
+
 
 
 }

@@ -16,7 +16,7 @@ public class SwerveModule {
     SwerveChassis.Module module;
 
     public Rotation2d targetAngle;
-    public double targetVel;
+    public double targetVelocity;
 
     public SwerveModule(SwerveChassis.Module module) {
         this.module = module;
@@ -33,21 +33,24 @@ public class SwerveModule {
     }
 
 
-
     public void rotateToAngle(Rotation2d angle) {
-        double diff = Math.IEEEremainder(angle.getRadians() - getModuleAngle().getRadians(), 2 * Math.PI);
-        diff -= diff > Math.PI ? 2 * Math.PI : 0;
+        targetAngle = angle;
 
-        swerveModule.rotateToAngle(Rotation2d.fromRadians(getModuleAngle().getRadians() + diff));
+        double rotationDifferance = Math.IEEEremainder(angle.getRadians() - getModuleAngle().getRadians(), 2 * Math.PI);
+        rotationDifferance -= rotationDifferance > Math.PI ? 2 * Math.PI : 0;
+
+        swerveModule.rotateToAngle(Rotation2d.fromRadians(getModuleAngle().getRadians() + rotationDifferance));
     }
 
     public Rotation2d getModuleAngle() {
-        return Rotation2d.fromRadians(swerveModuleInputs.angularPositionInRads);
+        return Rotation2d.fromRadians(swerveModuleInputs.angularPositionRadians);
     }
 
     public double getCurrentVelocity() {
         return swerveModuleInputs.linearVelocity;
     }
+
+    getRadians
 
     public double getCurrentMeters() {
         return swerveModuleInputs.linearMetersPassed;
@@ -56,6 +59,7 @@ public class SwerveModule {
     public SwerveModulePosition getCurrentPosition() {
         return new SwerveModulePosition(getCurrentMeters(), getModuleAngle());
     }
+
     public void resetEncoderToValue(Rotation2d angle) {
         swerveModule.resetAngle(angle);
     }
@@ -69,7 +73,8 @@ public class SwerveModule {
         resetEncoderToValue(Rotation2d.fromRadians(swerveModuleInputs.absoluteEncoderPosition));
     }
 
-    public void setLinSpeed(double speed) {
+    public void setLinearVelocity(double speed) {
+        targetVelocity = speed;
         swerveModule.setLinearVelocity(speed);
     }
 
@@ -77,7 +82,7 @@ public class SwerveModule {
         swerveModule.stop();
     }
 
-    public SwerveModuleState getModuleState(){
+    public SwerveModuleState getModuleState() {
         return new SwerveModuleState(
                 getCurrentVelocity(),
                 getModuleAngle()
@@ -85,48 +90,57 @@ public class SwerveModule {
     }
 
     public boolean isAtAngle(Rotation2d targetAngle, Rotation2d errorAngleTolerance) {
-        return (getModuleAngle().getRadians() - targetAngle.getRadians()) %(2*Math.PI) < errorAngleTolerance.getRadians()
-                || (targetAngle.getRadians() - getModuleAngle().getRadians()) % (2*Math.PI) < errorAngleTolerance.getRadians();
+        return (getModuleAngle().getRadians() - targetAngle.getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians()
+                || (targetAngle.getRadians() - getModuleAngle().getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians();
     }
-    public boolean isAtAngle (Rotation2d errorAngleTolerance){
+
+    public boolean isAtAngle(Rotation2d errorAngleTolerance) {
         return isAtAngle(targetAngle, errorAngleTolerance);
     }
-    public void setModuleState(SwerveModuleState moduleState){
-        setLinSpeed(moduleState.speedMetersPerSecond);
+
+    public void setModuleState(SwerveModuleState moduleState) {
+        setLinearVelocity(moduleState.speedMetersPerSecond);
         rotateToAngle(moduleState.angle);
     }
-    public double getAbsoluteEncoderValue(){
+
+    public double getAbsoluteEncoderValue() {
         return swerveModuleInputs.absoluteEncoderPosition;
     }
 
-    public double getLinearCurrent (){
+    public double getLinearCurrent() {
         return swerveModuleInputs.linearCurrent;
     }
 
-    public void setRotationalPower(double power){
+    public void setRotationalPower(double power) {
         swerveModule.setAngularVoltage(power * Battery.getInstance().getCurrentVoltage());
     }
 
-    public void setLinearPower(double power){
+    public void setLinearPower(double power) {
         swerveModule.setLinearVoltage(power * Battery.getInstance().getCurrentVoltage());
     }
-    public void setLinearIdleModeBrake(){
+
+    public void setLinearIdleModeBrake() {
         swerveModule.setLinearIdleModeBrake(true);
     }
-    public void setLinearIdleModeCoast(){
+
+    public void setLinearIdleModeCoast() {
         swerveModule.setLinearIdleModeBrake(false);
     }
-    public void setAngularIdleModeBrake(){
+
+    public void setAngularIdleModeBrake() {
         swerveModule.setAngularIdleModeBrake(true);
 
     }
-    public void setRotIdleModeCoast (){
+
+    public void setRotIdleModeCoast() {
         swerveModule.setAngularIdleModeBrake(false);
     }
-    public boolean isEncoderBroken(){
+
+    public boolean isEncoderBroken() {
         return !swerveModuleInputs.isAbsoluteEncoderConnected;
     }
-    public double getLinVoltage(){
+
+    public double getLinVoltage() {
         return swerveModuleInputs.linearVoltage;
     }
 

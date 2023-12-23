@@ -12,26 +12,30 @@ public class MoveByJoysticks extends SwerveCommand {
     private double angularSpeedFactor;
     private double linearSpeedFactor;
     private DoubleSupplier angularVelocitySupplier;
-    private boolean isSlow;
+    private DriveMode driveMode;
 
 
-    public MoveByJoysticks(boolean isSlow, DoubleSupplier angularVelocitySupplier) {
-        this.isSlow = isSlow;
+    public MoveByJoysticks(DriveMode driveMode, DoubleSupplier angularVelocitySupplier) {
+        this.driveMode = driveMode;
         this.angularVelocitySupplier = angularVelocitySupplier;
     }
-
-    public MoveByJoysticks(boolean isSlow) {
-        this(isSlow, () -> -OI.getInstance().getMainJoystick().getAxisValue(SmartJoystick.Axis.RIGHT_X));
+    public MoveByJoysticks(DriveMode driveMode) {
+        this(driveMode, () -> OI.getInstance().getMainJoystick().getAxisValue(SmartJoystick.Axis.RIGHT_X));
     }
+
+
 
     @Override
     public void initialize() {
-        if (isSlow) {
-            linearSpeedFactor = ChassisConstants.DRIVER_LINEAR_SPEED_FACTOR_SLOW;
-            angularSpeedFactor = ChassisConstants.DRIVER_ANGULAR_SPEED_FACTOR_SLOW;
-        } else {
-            linearSpeedFactor = ChassisConstants.DRIVER_LINEAR_SPEED_FACTOR;
-            angularSpeedFactor = ChassisConstants.DRIVER_ANGULAR_SPEED_FACTOR;
+        switch (driveMode) {
+            case SLOW:
+                linearSpeedFactor = ChassisConstants.DRIVER_LINEAR_SPEED_FACTOR_SLOW;
+                angularSpeedFactor = ChassisConstants.DRIVER_ANGULAR_SPEED_FACTOR_SLOW;
+                break;
+            case NORMAL:
+                linearSpeedFactor = ChassisConstants.DRIVER_LINEAR_SPEED_FACTOR;
+                angularSpeedFactor = ChassisConstants.DRIVER_ANGULAR_SPEED_FACTOR;
+                break;
         }
     }
 
@@ -46,27 +50,32 @@ public class MoveByJoysticks extends SwerveCommand {
                 linearSpeedFactor
         );
 
-        double angSpeed = SwerveChassisUtils.joystickValueToAngularVelocity(
+        double angularSpeed = SwerveChassisUtils.joystickValueToAngularVelocity(
                 angularVelocitySupplier.getAsDouble(),
                 angularSpeedFactor
         );
 
-        if (forwardSpeed == 0 && leftwardSpeed == 0 && angSpeed == 0) {
-            swerve.stop();
+        if (forwardSpeed == 0 && leftwardSpeed == 0 && angularSpeed == 0) {
+            swerveChassis.stop();
             return;
         }
-        swerve.moveByChassisSpeeds(
+        swerveChassis.moveByChassisSpeeds(
                 forwardSpeed,
                 leftwardSpeed,
-                angSpeed,
-                swerve.getChassisAngle()
+                angularSpeed,
+                swerveChassis.getChassisAngle()
         );
     }
 
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        swerve.stop();
+        swerveChassis.stop();
+    }
+
+    public enum DriveMode {
+        SLOW,
+        NORMAL
     }
 
 }

@@ -60,7 +60,7 @@ public class MK4ISwerveModule implements ISwerveModule {
 
     @Override
     public void rotateToAngle(Rotation2d angle) {
-        angularMotor.set(ControlMode.Position, Conversions.MK4IConversions.convertRadsToTicks(angle.getRadians()));
+        angularMotor.set(ControlMode.Position, Conversions.MK4IConversions.convertRadiansToTicks(angle));
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MK4ISwerveModule implements ISwerveModule {
 
     @Override
     public void resetAngle(Rotation2d angle) {
-        angularMotor.setSelectedSensorPosition(Conversions.MK4IConversions.convertRadsToTicks(angle.getRadians()));
+        angularMotor.setSelectedSensorPosition(Conversions.MK4IConversions.convertRadiansToTicks(angle));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class MK4ISwerveModule implements ISwerveModule {
         inputs.angularCurrent = angularMotor.getStatorCurrent();
 
         inputs.linearMetersPassed = Conversions.MK4IConversions.convertTicksToMeters(linearMotor.getSelectedSensorPosition());
-        inputs.angularPositionInRads = Conversions.MK4IConversions.convertTicksToRads(angularMotor.getSelectedSensorPosition());
+        inputs.angularPositionRadians = Conversions.MK4IConversions.convertTicksToRadians(angularMotor.getSelectedSensorPosition());
 
         if (Double.isNaN(Units.degreesToRadians(canCoder.getAbsolutePosition()))){
             inputs.absoluteEncoderPosition = 0;

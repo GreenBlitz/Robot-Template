@@ -53,7 +53,7 @@ public class SimulationSwerveModule implements ISwerveModule {
     @Override
     public void rotateToAngle(Rotation2d angle) {
         angularController.setSetpoint(angle.getRadians());
-        final double voltage = angularController.calculate(lastInputs.angularPositionInRads);
+        final double voltage = angularController.calculate(lastInputs.angularPositionRadians);
         setAngularVoltage(voltage);
     }
 
@@ -89,9 +89,9 @@ public class SimulationSwerveModule implements ISwerveModule {
         inputs.angularCurrent = angularMotor.getCurrentDrawAmps();
 
         inputs.linearMetersPassed = Conversions.MK4IConversions.convertRevolutionToMeters(linearMotor.getAngularPositionRotations());
-        inputs.angularPositionInRads = angularMotor.getAngularPositionRad();
+        inputs.angularPositionRadians = angularMotor.getAngularPositionRad();
 
-        inputs.absoluteEncoderPosition = inputs.angularPositionInRads;
+        inputs.absoluteEncoderPosition = inputs.angularPositionRadians;
         inputs.isAbsoluteEncoderConnected = true;
 
         lastInputs = inputs;
