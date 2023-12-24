@@ -7,11 +7,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 public class ChassisConstants {
 
     static final Pose2d INITIAL_ROBOT_POSITION = new Pose2d(0, 0, new Rotation2d(0));
+    public static final double FRONT_LEFT_X_POSITION = 0.3020647;
+    public static final double FRONT_LEFT_Y_POSITION = 0.25265;
     public static final Translation2d[] SWERVE_LOCATIONS_IN_SWERVE_KINEMATICS_COORDINATES = new Translation2d[]{
-            new Translation2d(0.3020647, 0.25265), /*fl*/
-            new Translation2d(0.3020647, -0.25265),/*fr*/
-            new Translation2d(-0.3020647, 0.25265),/*bl*/
-            new Translation2d(-0.3020647, -0.25265)/*br*/};
+            new Translation2d(FRONT_LEFT_X_POSITION, FRONT_LEFT_Y_POSITION), /*fl*/
+            new Translation2d(FRONT_LEFT_X_POSITION, -FRONT_LEFT_Y_POSITION),/*fr*/
+            new Translation2d(-FRONT_LEFT_X_POSITION, FRONT_LEFT_Y_POSITION),/*bl*/
+            new Translation2d(-FRONT_LEFT_X_POSITION, -FRONT_LEFT_Y_POSITION)/*br*/};
 
     public static final double MAX_VELOCITY = 4.1818320981472068;
     public static final double MAX_ACCELERATION = 14.37979171376739;

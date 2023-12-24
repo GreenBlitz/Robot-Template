@@ -50,8 +50,6 @@ public class SwerveModule {
         return swerveModuleInputs.linearVelocity;
     }
 
-    getRadians
-
     public double getCurrentMeters() {
         return swerveModuleInputs.linearMetersPassed;
     }
@@ -90,8 +88,15 @@ public class SwerveModule {
     }
 
     public boolean isAtAngle(Rotation2d targetAngle, Rotation2d errorAngleTolerance) {
-        return (getModuleAngle().getRadians() - targetAngle.getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians()
-                || (targetAngle.getRadians() - getModuleAngle().getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians();
+
+        if(
+                (getModuleAngle().getRadians() - targetAngle.getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians() ||
+             (targetAngle.getRadians() - getModuleAngle().getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians()
+        ){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public boolean isAtAngle(Rotation2d errorAngleTolerance) {
