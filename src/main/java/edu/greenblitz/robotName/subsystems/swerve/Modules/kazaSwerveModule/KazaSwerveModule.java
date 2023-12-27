@@ -36,7 +36,7 @@ public class KazaSwerveModule implements ISwerveModule {
             case BACK_LEFT -> KazaSwerveConstants.KAZA_SWERVE_MODULE_BACK_LEFT;
             case FRONT_RIGHT -> KazaSwerveConstants.KAZA_SWERVE_MODULE_FRONT_RIGHT;
             case FRONT_LEFT -> KazaSwerveConstants.KAZA_SWERVE_MODULE_FRONT_LEFT;
-            default -> throw new IllegalArgumentException("Invalid module");
+            default -> throw new IllegalArgumentException("Invalid swerve module");
         };
 
         angleMotorID = configObject.angleMotorID;

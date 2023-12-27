@@ -32,7 +32,7 @@ public class MK4ISwerveModule implements ISwerveModule {
             case FRONT_RIGHT -> MK4iSwerveConstants.MK4I_MODULE_FRONT_RIGHT;
             case BACK_LEFT -> MK4iSwerveConstants.MK4I_MODULE_BACK_LEFT;
             case BACK_RIGHT -> MK4iSwerveConstants.MK4I_MODULE_BAK_RIGHT;
-            default -> throw new IllegalArgumentException("Invalid module");
+            default -> throw new IllegalArgumentException("Invalid swerve module");
         };
 
         angularMotor = new GBFalcon(configObject.angleMotorID);
