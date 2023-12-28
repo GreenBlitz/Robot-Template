@@ -5,23 +5,38 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import org.littletonrobotics.junction.Logger;
 
 public class TunableNumber {
-    private static final double DEFAULT_VALUE = 0;
-    private GenericEntry networkTableEntry;
+    private double defaultValue = 0;
+    private final GenericEntry networkTableEntry;
     protected double value;
-    String widgetTitle;
+    private String widgetTitle;
 
     public TunableNumber(String widgetTitle, String shuffleBoardTabTitle) {
-        networkTableEntry = Shuffleboard.getTab(shuffleBoardTabTitle).add(widgetTitle, DEFAULT_VALUE).getEntry();
         this.widgetTitle = widgetTitle;
+        value = defaultValue;
+
+        networkTableEntry = Shuffleboard.getTab(shuffleBoardTabTitle).add(widgetTitle, defaultValue).getEntry();
+    }
+
+    public TunableNumber(String widgetTitle, String shuffleBoardTabTitle, double defaultValue) {
+        this.widgetTitle = widgetTitle;
+        this.defaultValue = defaultValue;
+        value = defaultValue;
+
+        networkTableEntry = Shuffleboard.getTab(shuffleBoardTabTitle).add(widgetTitle, defaultValue).getEntry();
     }
 
     public double getValue() {
-        return networkTableEntry.getDouble(DEFAULT_VALUE);
+        return networkTableEntry.getDouble(defaultValue);
     }
-    public boolean hasChanged(){
-        if(value != getValue()){
+
+    public double getDefaultValue(){
+        return defaultValue;
+    }
+
+    public boolean hasChanged() {
+        if (value != getValue()) {
             value = getValue();
-            Logger.recordOutput(widgetTitle , value);
+            Logger.recordOutput(widgetTitle, value);
             return true;
         }
         return false;

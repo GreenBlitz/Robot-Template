@@ -6,19 +6,23 @@ import java.util.HashMap;
 
 public class TunableNumberManager extends GBSubsystem {
     private static TunableNumberManager instance;
-    private static HashMap<String ,TunableNumber> tunableNumbers;
-    private static void init (){
-        if(instance == null) {
+    private static HashMap<String, TunableNumber> tunableNumbers;
+
+    private static void init() {
+        if (instance == null) {
             instance = new TunableNumberManager();
         }
     }
-    public static TunableNumberManager getInstance(){
+
+    public static TunableNumberManager getInstance() {
         init();
         return instance;
     }
-    public TunableNumberManager(){
+
+    public TunableNumberManager() {
         tunableNumbers = new HashMap<>();
     }
+
     @Override
     public void periodic() {
         for (TunableNumber tunableNumber : tunableNumbers.values()) {
@@ -26,10 +30,11 @@ public class TunableNumberManager extends GBSubsystem {
         }
     }
 
-    public void addTunableNumber(String tunableNumberKey, TunableNumber tunableNumber){
-        tunableNumbers.put(tunableNumberKey,tunableNumber);
+    public void addTunableNumber(String tunableNumberKey, TunableNumber tunableNumber) {
+        tunableNumbers.put(tunableNumberKey, tunableNumber);
     }
-    public TunableNumber getTunableNumberForKey (String tunableNumberKey){
+
+    public TunableNumber getTunableNumberForKey(String tunableNumberKey) {
         return tunableNumbers.get(tunableNumberKey);
     }
 }
