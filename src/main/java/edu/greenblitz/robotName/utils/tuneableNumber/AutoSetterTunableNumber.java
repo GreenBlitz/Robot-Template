@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 public class AutoSetterTunableNumber extends TunableNumber {
     private Consumer<Double> valueSettingFunction;
-    private double value;
 
     public AutoSetterTunableNumber(String widgetTitle, String shuffleBoardTabTitle, Consumer<Double> valueSettingFunction) {
         super(widgetTitle, shuffleBoardTabTitle);

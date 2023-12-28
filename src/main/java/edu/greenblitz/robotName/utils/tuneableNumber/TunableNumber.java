@@ -7,7 +7,7 @@ import org.littletonrobotics.junction.Logger;
 public class TunableNumber {
     private static final double DEFAULT_VALUE = 0;
     private GenericEntry networkTableEntry;
-    private double value;
+    protected double value;
     String widgetTitle;
 
     public TunableNumber(String widgetTitle, String shuffleBoardTabTitle) {
