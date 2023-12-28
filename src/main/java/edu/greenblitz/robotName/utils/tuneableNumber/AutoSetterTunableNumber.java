@@ -12,12 +12,11 @@ public class AutoSetterTunableNumber extends TunableNumber {
     }
 
     @Override
-    public void periodic() {
-        if (value != getValue()) {
-            super.periodic();
-            value = getValue();
+    public boolean hasChanged() {
+        boolean hasChanged = super.hasChanged();
+        if (hasChanged)
             valueSettingFunction.accept(value);
-        }
+        return hasChanged;
     }
 
 }

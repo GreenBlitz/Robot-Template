@@ -1,9 +1,7 @@
 package edu.greenblitz.robotName.utils.tuneableNumber;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import org.littletonrobotics.junction.Logger;
 
 public class TunableNumber {
@@ -20,10 +18,12 @@ public class TunableNumber {
     public double getValue() {
         return networkTableEntry.getDouble(DEFAULT_VALUE);
     }
-    public void periodic(){
+    public boolean hasChanged(){
         if(value != getValue()){
             value = getValue();
             Logger.recordOutput(widgetTitle , value);
+            return true;
         }
+        return false;
     }
 }
