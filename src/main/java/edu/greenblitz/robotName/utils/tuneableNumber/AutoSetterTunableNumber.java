@@ -10,12 +10,13 @@ public class AutoSetterTunableNumber extends TunableNumber {
         this.valueSettingFunction = valueSettingFunction;
     }
 
+
     @Override
-    public boolean hasChanged() {
-        boolean hasChanged = super.hasChanged();
-        if (hasChanged)
+    public void periodic() {
+        if (hasChanged()) {
+            super.setValueByDashboard();
             valueSettingFunction.accept(value);
-        return hasChanged;
+        }
     }
 
 }

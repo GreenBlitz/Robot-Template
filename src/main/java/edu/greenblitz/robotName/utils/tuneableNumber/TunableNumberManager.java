@@ -26,7 +26,7 @@ public class TunableNumberManager extends GBSubsystem {
     @Override
     public void periodic() {
         for (TunableNumber tunableNumber : tunableNumbers.values()) {
-            tunableNumber.hasChanged();
+            tunableNumber.periodic();
         }
     }
 

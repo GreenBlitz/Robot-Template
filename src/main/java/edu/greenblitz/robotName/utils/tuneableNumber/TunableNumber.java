@@ -29,16 +29,21 @@ public class TunableNumber {
         return networkTableEntry.getDouble(defaultValue);
     }
 
-    public double getDefaultValue(){
+    public double getDefaultValue() {
         return defaultValue;
     }
 
     public boolean hasChanged() {
-        if (value != getValue()) {
-            value = getValue();
-            Logger.recordOutput(widgetTitle, value);
-            return true;
-        }
-        return false;
+        return value != getValue();
+    }
+
+    public void setValueByDashboard() {
+        value = getValue();
+        Logger.recordOutput(widgetTitle, value);
+    }
+
+    public void periodic() {
+        if (hasChanged())
+            setValueByDashboard();
     }
 }

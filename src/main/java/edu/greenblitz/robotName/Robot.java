@@ -17,12 +17,10 @@ public class Robot extends LoggedRobot {
     public void robotInit() {
         OI.getInstance();
         CommandScheduler.getInstance().enable();
-        TunableNumberManager.getInstance().addTunableNumber("test", new TunableNumber("test","Teloperated"));
     }
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        SmartDashboard.putNumber("aaaapppp", TunableNumberManager.getInstance().getTunableNumberForKey("test").getValue());
     }
 
     @Override
