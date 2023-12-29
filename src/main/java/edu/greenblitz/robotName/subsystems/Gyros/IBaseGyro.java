@@ -11,12 +11,6 @@ public interface IBaseGyro {
 
     void updateRoll(Rotation2d roll);
 
-    Rotation2d getYaw();
-
-    Rotation2d getPitch();
-
-    Rotation2d getRoll();
-
 
     void updateInputs(GyroInputsAutoLogged inputs);
 

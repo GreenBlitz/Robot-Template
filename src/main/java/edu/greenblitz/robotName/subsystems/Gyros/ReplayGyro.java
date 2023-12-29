@@ -20,20 +20,6 @@ public class ReplayGyro implements IBaseGyro {
 
     }
 
-    @Override
-    public Rotation2d getYaw() {
-        return null;
-    }
-
-    @Override
-    public Rotation2d getPitch() {
-        return null;
-    }
-
-    @Override
-    public Rotation2d getRoll() {
-        return null;
-    }
 
     @Override
     public void updateInputs(GyroInputsAutoLogged inputs) {

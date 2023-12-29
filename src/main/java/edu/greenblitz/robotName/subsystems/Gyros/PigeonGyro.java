@@ -26,32 +26,17 @@ public class PigeonGyro implements IBaseGyro {
 
     @Override
     public void updateYaw(Rotation2d yaw) {
-        yawOffset.plus(yaw.plus(getYaw()));
+        yawOffset.plus(yaw.plus(Rotation2d.fromRadians(lastInputs.yaw)));
     }
 
     @Override
     public void updatePitch(Rotation2d pitch) {
-        pitchOffset.plus(pitch.plus(getPitch()));
+        pitchOffset.plus(pitch.plus(Rotation2d.fromRadians(lastInputs.pitch)));
     }
 
     @Override
     public void updateRoll(Rotation2d roll) {
-        rollOffset.plus(roll.plus(getRoll()));
-    }
-
-    @Override
-    public Rotation2d getYaw() {
-        return Rotation2d.fromRadians(lastInputs.yaw);
-    }
-
-    @Override
-    public Rotation2d getPitch() {
-        return Rotation2d.fromRadians(lastInputs.pitch);
-    }
-
-    @Override
-    public Rotation2d getRoll() {
-        return Rotation2d.fromRadians(lastInputs.roll);
+        rollOffset.plus(roll.plus(Rotation2d.fromRadians(lastInputs.roll)));
     }
 
     @Override

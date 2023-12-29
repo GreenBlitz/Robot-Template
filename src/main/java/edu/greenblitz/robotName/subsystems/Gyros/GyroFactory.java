@@ -4,7 +4,7 @@ import edu.greenblitz.robotName.RobotConstants;
 
 public class GyroFactory {
 
-    public static IBaseGyro create(){
+    public static IBaseGyro create() {
         switch (RobotConstants.ROBOT_TYPE) {
             case ROBOT_NAME:
                 return new PigeonGyro(GyroConstants.PigeonGyro.ID);

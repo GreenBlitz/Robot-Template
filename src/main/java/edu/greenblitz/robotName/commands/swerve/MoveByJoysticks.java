@@ -9,6 +9,11 @@ import java.util.function.DoubleSupplier;
 
 public class MoveByJoysticks extends SwerveCommand {
 
+    public enum DriveMode {
+        SLOW,
+        NORMAL
+    }
+
     private double angularSpeedFactor;
     private double linearSpeedFactor;
     private DoubleSupplier angularVelocitySupplier;
@@ -71,11 +76,6 @@ public class MoveByJoysticks extends SwerveCommand {
     public void end(boolean interrupted) {
         super.end(interrupted);
         swerveChassis.stop();
-    }
-
-    public enum DriveMode {
-        SLOW,
-        NORMAL
     }
 
 }

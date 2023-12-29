@@ -29,6 +29,14 @@ import java.util.Optional;
 
 public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 
+    public enum Module {
+        FRONT_LEFT,
+        FRONT_RIGHT,
+        BACK_LEFT,
+        BACK_RIGHT
+    }
+
+
     private static SwerveChassis instance;
     private SwerveModule frontRight, frontLeft, backRight, backLeft;
     private IBaseGyro gyro;
@@ -192,7 +200,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
      * returns chassis angle in radians
      */
     private Rotation2d getGyroAngle() {
-        return gyro.getYaw();
+        return Rotation2d.fromRadians(gyroInputs.yaw);
     }
 
     public Rotation2d getChassisAngle() {
@@ -264,7 +272,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         };
     }
 
-    public SwerveModuleState[] getSwerveModuleStates(){
+    public SwerveModuleState[] getSwerveModuleStates() {
         SwerveModuleState[] moduleStates = new SwerveModuleState[Module.values().length];
         for (Module module : Module.values()) {
             moduleStates[module.ordinal()] = getModuleState(module);
@@ -301,7 +309,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 
     public void updatePoseEstimationLimeLight() {
         boolean poseDifference = odometry.getPoseMeters().getTranslation().getDistance(getRobotPose().getTranslation()) < OdometryConstants.MAX_DISTANCE_TO_FILTER_OUT;
-        boolean shouldUpdateByOdometry = poseDifference && !isRobotNotOnGround();
+        boolean shouldUpdateByOdometry = poseDifference && isRobotOnGorund();
         if (shouldUpdateByOdometry) {
             poseEstimator.update(getGyroAngle(), getSwerveModulePositions());
         }
@@ -316,14 +324,14 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         return module.getLinearCurrent() > MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT - CURRENT_TOLERANCE && module.getLinearCurrent() < CURRENT_TOLERANCE + MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT;
     }
 
-    public boolean isRobotNotOnGround() {
+    public boolean isRobotOnGorund() {
 
         boolean frontLeft = isModuleAtFreeCurrent(this.frontLeft);
         boolean frontRight = isModuleAtFreeCurrent(this.frontRight);
         boolean backLeft = isModuleAtFreeCurrent(this.backLeft);
         boolean backRight = isModuleAtFreeCurrent(this.backRight);
 
-        return ((frontLeft && frontRight) || (backLeft && backRight) || (frontLeft && backLeft) || (backRight && frontRight) || (frontLeft && backRight) || (frontRight && backLeft));
+        return !(((frontLeft && frontRight) || (backLeft && backRight) || (frontLeft && backLeft) || (backRight && frontRight) || (frontLeft && backRight) || (frontRight && backLeft)));
     }
 
     public void updateOdometry() {
@@ -462,13 +470,6 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         inputs.yAxisSpeed = getChassisSpeeds().vyMetersPerSecond;
 
     }
-    public enum Module {
-        FRONT_LEFT,
-        FRONT_RIGHT,
-        BACK_LEFT,
-        BACK_RIGHT
-    }
-
 
 
 }

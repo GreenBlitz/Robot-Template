@@ -17,6 +17,12 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot {
 
+    public enum RobotType {
+        ROBOT_NAME,
+        SIMULATION,
+        REPLAY
+    }
+
     @Override
     public void robotInit() {
         initializeLogger();
@@ -64,10 +70,6 @@ public class Robot extends LoggedRobot {
         Logger.start();
     }
     
-    public enum RobotType {
-        ROBOT_NAME,
-        SIMULATION,
-        REPLAY
-    }
+
 
 }

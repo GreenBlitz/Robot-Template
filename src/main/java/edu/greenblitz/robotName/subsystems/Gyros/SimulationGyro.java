@@ -25,21 +25,6 @@ public class SimulationGyro implements IBaseGyro {
     }
 
     @Override
-    public Rotation2d getYaw() {
-        return Rotation2d.fromRadians(lastInputs.yaw);
-    }
-
-    @Override
-    public Rotation2d getPitch() {
-        return Rotation2d.fromRadians(lastInputs.pitch);
-    }
-
-    @Override
-    public Rotation2d getRoll() {
-        return Rotation2d.fromRadians(lastInputs.roll);
-    }
-
-    @Override
     public void updateInputs(GyroInputsAutoLogged inputs) {
         inputs.roll = 0;
         inputs.pitch = 0;
