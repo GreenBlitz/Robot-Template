@@ -5,15 +5,11 @@ import edu.greenblitz.robotName.RobotConstants;
 public class GyroFactory {
 
     public static IAngleMeasurementGyro create() {
-        switch (RobotConstants.ROBOT_TYPE) {
-            case ROBOT_NAME:
-                return new PigeonGyro(GyroConstants.PigeonGyro.ID);
-            case REPLAY:
-                return new ReplayGyro();
-            case SIMULATION:
-            default:
-                return new SimulationGyro();
-        }
+        return switch (RobotConstants.ROBOT_TYPE) {
+            case ROBOT_NAME -> new PigeonGyro(GyroConstants.PigeonGyro.ID);
+            case REPLAY -> new ReplayGyro();
+            default -> new SimulationGyro();
+        };
     }
 
 }

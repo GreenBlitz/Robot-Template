@@ -1,6 +1,5 @@
 package edu.greenblitz.robotName.subsystems.swerve.Chassis;
 
-import com.revrobotics.CANSparkMax;
 import edu.greenblitz.robotName.OdometryConstants;
 import edu.greenblitz.robotName.VisionConstants;
 import edu.greenblitz.robotName.subsystems.Gyros.GyroFactory;
@@ -165,8 +164,8 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
     }
 
 
-    public double getModuleAbsoluteEncoderValue(Module module) {
-        return getModule(module).getAbsoluteEncoderValue();
+    public Rotation2d getModuleAbsoluteEncoderAngle(Module module) {
+        return getModule(module).getAbsoluteEncoderPosition();
     }
 
 
@@ -309,7 +308,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 
     public void updatePoseEstimationLimeLight() {
         boolean poseDifference = odometry.getPoseMeters().getTranslation().getDistance(getRobotPose().getTranslation()) < OdometryConstants.MAX_DISTANCE_TO_FILTER_OUT;
-        boolean shouldUpdateByOdometry = poseDifference && isRobotOnGorund();
+        boolean shouldUpdateByOdometry = poseDifference && isRobotOnGround();
         if (shouldUpdateByOdometry) {
             poseEstimator.update(getGyroAngle(), getSwerveModulePositions());
         }
@@ -324,7 +323,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         return module.getLinearCurrent() > MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT - CURRENT_TOLERANCE && module.getLinearCurrent() < CURRENT_TOLERANCE + MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT;
     }
 
-    public boolean isRobotOnGorund() {
+    public boolean isRobotOnGround() {
 
         boolean frontLeft = isModuleAtFreeCurrent(this.frontLeft);
         boolean frontRight = isModuleAtFreeCurrent(this.frontRight);
@@ -337,23 +336,6 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
     public void updateOdometry() {
         odometry.update(getGyroAngle(), getSwerveModulePositions());
     }
-
-    public boolean getFrontLeftHasObstacles() {
-        return isModuleAtFreeCurrent(frontLeft);
-    }
-
-    public boolean getFrontRightHasObstacles() {
-        return isModuleAtFreeCurrent(frontRight);
-    }
-
-    public boolean getBackLeftHasObstacles() {
-        return isModuleAtFreeCurrent(backLeft);
-    }
-
-    public boolean getBackRightHasObstacles() {
-        return isModuleAtFreeCurrent(backRight);
-    }
-
 
     private void addVisionMeasurement(Pair<Pose2d, Double> poseTimestampPair) {
         Pose2d visionPose = poseTimestampPair.getFirst();
@@ -429,8 +411,8 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         }
     }
 
-    public void setAngleMotorsIdleMode(CANSparkMax.IdleMode idleMode) {
-        if (idleMode == CANSparkMax.IdleMode.kBrake) {
+    public void setAngleMotorsIdleModeToBrake(boolean isBrake) {
+        if (isBrake) {
             for (Module module : Module.values()) {
                 getModule(module).setAngularIdleModeBrake();
             }
@@ -468,8 +450,5 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         inputs.omegaRadiansPerSecond = getChassisSpeeds().omegaRadiansPerSecond;
         inputs.xAxisSpeed = getChassisSpeeds().vxMetersPerSecond;
         inputs.yAxisSpeed = getChassisSpeeds().vyMetersPerSecond;
-
     }
-
-
 }

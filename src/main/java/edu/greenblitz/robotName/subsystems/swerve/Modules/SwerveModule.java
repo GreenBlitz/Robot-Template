@@ -101,8 +101,8 @@ public class SwerveModule {
         rotateToAngle(moduleState.angle);
     }
 
-    public double getAbsoluteEncoderValue() {
-        return swerveModuleInputs.absoluteEncoderPosition;
+    public Rotation2d getAbsoluteEncoderPosition() {
+        return Rotation2d.fromRadians(swerveModuleInputs.absoluteEncoderPosition);
     }
 
     public double getLinearCurrent() {

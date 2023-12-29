@@ -9,6 +9,7 @@ public class SwerveModuleConfigObject {
     public int AbsoluteEncoderID;
     public boolean linInverted;
     public Rotation2d encoderOffset;
+
     public SwerveModuleConfigObject(int angleMotorID, int linearMotorID, int AbsoluteEncoderID, Rotation2d encoderOffset, boolean linInverted) {
         this.angleMotorID = angleMotorID;
         this.linearMotorID = linearMotorID;
@@ -16,7 +17,8 @@ public class SwerveModuleConfigObject {
         this.linInverted = linInverted;
         this.encoderOffset = encoderOffset;
     }
-    public SwerveModuleConfigObject(int angleMotorID, int linearMotorID, int AbsoluteEncoderID,boolean linInverted) {
+
+    public SwerveModuleConfigObject(int angleMotorID, int linearMotorID, int AbsoluteEncoderID, boolean linInverted) {
         this(
                 angleMotorID,
                 linearMotorID,
@@ -25,7 +27,6 @@ public class SwerveModuleConfigObject {
                 linInverted
         );
     }
-
 
 
 }
