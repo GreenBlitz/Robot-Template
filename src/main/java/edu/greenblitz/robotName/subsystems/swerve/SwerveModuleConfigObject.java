@@ -1,13 +1,15 @@
 package edu.greenblitz.robotName.subsystems.swerve;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 public class SwerveModuleConfigObject {
 
     public int angleMotorID;
     public int linearMotorID;
     public int AbsoluteEncoderID;
     public boolean linInverted;
-    public double encoderOffset;
-    public SwerveModuleConfigObject(int angleMotorID, int linearMotorID, int AbsoluteEncoderID,double encoderOffset, boolean linInverted) {
+    public Rotation2d encoderOffset;
+    public SwerveModuleConfigObject(int angleMotorID, int linearMotorID, int AbsoluteEncoderID, Rotation2d encoderOffset, boolean linInverted) {
         this.angleMotorID = angleMotorID;
         this.linearMotorID = linearMotorID;
         this.AbsoluteEncoderID = AbsoluteEncoderID;

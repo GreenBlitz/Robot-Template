@@ -3,7 +3,7 @@ package edu.greenblitz.robotName.subsystems.Gyros;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 
-public interface IBaseGyro {
+public interface IAngleMeasurementGyro {
 
     void updateYaw(Rotation2d yaw);
 

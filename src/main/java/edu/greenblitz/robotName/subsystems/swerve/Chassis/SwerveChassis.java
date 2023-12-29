@@ -5,7 +5,7 @@ import edu.greenblitz.robotName.OdometryConstants;
 import edu.greenblitz.robotName.VisionConstants;
 import edu.greenblitz.robotName.subsystems.Gyros.GyroFactory;
 import edu.greenblitz.robotName.subsystems.Gyros.GyroInputsAutoLogged;
-import edu.greenblitz.robotName.subsystems.Gyros.IBaseGyro;
+import edu.greenblitz.robotName.subsystems.Gyros.IAngleMeasurementGyro;
 import edu.greenblitz.robotName.subsystems.Limelight.MultiLimelight;
 import edu.greenblitz.robotName.subsystems.Photonvision;
 import edu.greenblitz.robotName.subsystems.swerve.Modules.SwerveModule;
@@ -39,7 +39,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 
     private static SwerveChassis instance;
     private SwerveModule frontRight, frontLeft, backRight, backLeft;
-    private IBaseGyro gyro;
+    private IAngleMeasurementGyro gyro;
     private SwerveDriveKinematics kinematics;
     private SwerveDrivePoseEstimator poseEstimator;
     private SwerveDriveOdometry odometry;
@@ -284,7 +284,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         return this.kinematics;
     }
 
-    public IBaseGyro getGyro() {
+    public IAngleMeasurementGyro getGyro() {
         return gyro;
     }
 

@@ -17,12 +17,12 @@ public class Conversions {
 
     public static class MK4IConversions{
         public static double convertRevolutionToMeters(double angInTicks){
-            return angInTicks * MK4iSwerveConstants.WHEEL_CIRC;
+            return angInTicks * MK4iSwerveConstants.WHEEL_CIRCUMFERENCE;
         }
 
 
         public static double revolutionsToMeters(double revolutions) {
-            return revolutions * MK4iSwerveConstants.WHEEL_CIRC;
+            return revolutions * MK4iSwerveConstants.WHEEL_CIRCUMFERENCE;
         }
         public static double convertRadiansToTicks(Rotation2d angle) {
             return angle.getRadians() / MK4iSwerveConstants.ANGLE_TICKS_TO_RADIANS;
@@ -54,7 +54,7 @@ public class Conversions {
             return selectedSensorVelocity * MK4iSwerveConstants.LINEAR_TICKS_TO_METERS_PER_SECOND;
         }
         public static double convertRPMToMeterPerSecond (double rpm){
-            return Conversions.convertRPMToMeterPerSecond(rpm, MK4iSwerveConstants.WHEEL_CIRC / (2 * Math.PI));
+            return Conversions.convertRPMToMeterPerSecond(rpm, MK4iSwerveConstants.WHEEL_CIRCUMFERENCE / (2 * Math.PI));
         }
     }
 

@@ -3,7 +3,7 @@ package edu.greenblitz.robotName.subsystems.Gyros;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-public class PigeonGyro implements IBaseGyro {
+public class PigeonGyro implements IAngleMeasurementGyro {
 
     private PigeonIMU pigeonIMU;
     Rotation2d yawOffset;

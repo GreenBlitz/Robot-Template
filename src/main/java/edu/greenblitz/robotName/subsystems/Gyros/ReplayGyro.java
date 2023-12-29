@@ -2,7 +2,7 @@ package edu.greenblitz.robotName.subsystems.Gyros;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 
-public class ReplayGyro implements IBaseGyro {
+public class ReplayGyro implements IAngleMeasurementGyro {
 
 
     @Override

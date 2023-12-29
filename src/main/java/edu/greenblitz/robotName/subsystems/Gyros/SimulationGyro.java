@@ -5,7 +5,7 @@ import edu.greenblitz.robotName.RobotConstants;
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-public class SimulationGyro implements IBaseGyro {
+public class SimulationGyro implements IAngleMeasurementGyro {
 
     private GyroInputsAutoLogged lastInputs = new GyroInputsAutoLogged();
 

@@ -42,7 +42,7 @@ public class MK4ISwerveModule implements ISwerveModule {
         linearMotor.config(new GBFalcon.FalconConfObject(MK4iSwerveConstants.LINEAR_FALCON_CONF_OBJECT).withInverted(configObject.linInverted));
 
         canCoder = new CANCoder(configObject.AbsoluteEncoderID);
-        this.encoderOffset = configObject.encoderOffset;
+        this.encoderOffset = configObject.encoderOffset.getRotations();
 
         this.linearFeedForward = new SimpleMotorFeedforward(MK4iSwerveConstants.ks, MK4iSwerveConstants.kv, MK4iSwerveConstants.ka);
     }
