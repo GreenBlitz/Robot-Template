@@ -1,13 +1,14 @@
 package edu.greenblitz.robotName.subsystems.Gyros;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
+import edu.wpi.first.math.geometry.Rotation2d;
 
-public class PigeonGyro implements IGyro {
+public class PigeonGyro implements IBaseGyro {
 
     private PigeonIMU pigeonIMU;
-    double yawOffset = 0.0;
-    double pitchOffset = 0.0;
-    double rollOffset = 0.0;
+    Rotation2d yawOffset;
+    Rotation2d pitchOffset;
+    Rotation2d rollOffset;
 
     private GyroInputsAutoLogged lastInputs = new GyroInputsAutoLogged();
 
@@ -24,40 +25,40 @@ public class PigeonGyro implements IGyro {
 
 
     @Override
-    public void setYaw(double yaw) {
-        yawOffset += (yaw + getYaw());
+    public void updateYaw(Rotation2d yaw) {
+        yawOffset.plus(yaw.plus(getYaw()));
     }
 
     @Override
-    public void setPitch(double pitch) {
-        pitchOffset += (pitch + getPitch());
+    public void updatePitch(Rotation2d pitch) {
+        pitchOffset.plus(pitch.plus(getPitch()));
     }
 
     @Override
-    public void setRoll(double roll) {
-        rollOffset += (roll + getRoll());
+    public void updateRoll(Rotation2d roll) {
+        rollOffset.plus(roll.plus(getRoll()));
     }
 
     @Override
-    public double getYaw() {
-        return lastInputs.yaw;
+    public Rotation2d getYaw() {
+        return Rotation2d.fromRadians(lastInputs.yaw);
     }
 
     @Override
-    public double getPitch() {
-        return lastInputs.pitch;
+    public Rotation2d getPitch() {
+        return Rotation2d.fromRadians(lastInputs.pitch);
     }
 
     @Override
-    public double getRoll() {
-        return lastInputs.roll;
+    public Rotation2d getRoll() {
+        return Rotation2d.fromRadians(lastInputs.roll);
     }
 
     @Override
     public void updateInputs(GyroInputsAutoLogged inputs) {
-        inputs.yaw = ((Math.toRadians(pigeonIMU.getYaw()) - yawOffset) % (2 * Math.PI));
-        inputs.pitch = ((Math.toRadians(pigeonIMU.getPitch()) - pitchOffset) % (2 * Math.PI));
-        inputs.roll = ((Math.toRadians(pigeonIMU.getRoll()) - rollOffset) % (2 * Math.PI));
+        inputs.yaw = (Math.toRadians(pigeonIMU.getYaw()) - yawOffset.getRadians()) % (2 * Math.PI);
+        inputs.pitch = (Math.toRadians(pigeonIMU.getPitch()) - pitchOffset.getRadians()) % (2 * Math.PI);
+        inputs.roll = (Math.toRadians(pigeonIMU.getRoll()) - rollOffset.getRadians()) % (2 * Math.PI);
 
         lastInputs = inputs;
     }

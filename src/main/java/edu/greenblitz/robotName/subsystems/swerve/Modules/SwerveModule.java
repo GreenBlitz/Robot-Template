@@ -88,15 +88,8 @@ public class SwerveModule {
     }
 
     public boolean isAtAngle(Rotation2d targetAngle, Rotation2d errorAngleTolerance) {
-
-        if(
-                (getModuleAngle().getRadians() - targetAngle.getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians() ||
-             (targetAngle.getRadians() - getModuleAngle().getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians()
-        ){
-            return true;
-        }else {
-            return false;
-        }
+        return (getModuleAngle().getRadians() - targetAngle.getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians() ||
+                (targetAngle.getRadians() - getModuleAngle().getRadians()) % (2 * Math.PI) < errorAngleTolerance.getRadians();
     }
 
     public boolean isAtAngle(Rotation2d errorAngleTolerance) {

@@ -5,7 +5,7 @@ import edu.greenblitz.robotName.OdometryConstants;
 import edu.greenblitz.robotName.VisionConstants;
 import edu.greenblitz.robotName.subsystems.Gyros.GyroFactory;
 import edu.greenblitz.robotName.subsystems.Gyros.GyroInputsAutoLogged;
-import edu.greenblitz.robotName.subsystems.Gyros.IGyro;
+import edu.greenblitz.robotName.subsystems.Gyros.IBaseGyro;
 import edu.greenblitz.robotName.subsystems.Limelight.MultiLimelight;
 import edu.greenblitz.robotName.subsystems.Photonvision;
 import edu.greenblitz.robotName.subsystems.swerve.Modules.SwerveModule;
@@ -31,7 +31,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 
     private static SwerveChassis instance;
     private SwerveModule frontRight, frontLeft, backRight, backLeft;
-    private IGyro gyro;
+    private IBaseGyro gyro;
     private SwerveDriveKinematics kinematics;
     private SwerveDrivePoseEstimator poseEstimator;
     private SwerveDriveOdometry odometry;
@@ -169,7 +169,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
     }
 
     public void resetChassisPose() {
-        gyro.setYaw(0);
+        gyro.updateYaw(Rotation2d.fromRadians(0));
         poseEstimator.resetPosition(getGyroAngle(), getSwerveModulePositions(), new Pose2d());
     }
 
@@ -177,7 +177,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         if (MultiLimelight.getInstance().isConnected()) {
             if (MultiLimelight.getInstance().getFirstAvailableTarget().isPresent()) {
                 Pose2d visionPose = MultiLimelight.getInstance().getFirstAvailableTarget().get().getFirst();
-                getGyro().setYaw(0);
+                getGyro().updateYaw(Rotation2d.fromRadians(0));
                 poseEstimator.resetPosition(getGyroAngle(), getSwerveModulePositions(), visionPose);
                 odometry.resetPosition(getGyroAngle(), getSwerveModulePositions(), visionPose);
             }
@@ -190,7 +190,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
      * returns chassis angle in radians
      */
     private Rotation2d getGyroAngle() {
-        return new Rotation2d(gyro.getYaw());
+        return gyro.getYaw();
     }
 
     public Rotation2d getChassisAngle() {
@@ -267,7 +267,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         return this.kinematics;
     }
 
-    public IGyro getGyro() {
+    public IBaseGyro getGyro() {
         return gyro;
     }
 
@@ -292,7 +292,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
 
     public void updatePoseEstimationLimeLight() {
         boolean poseDifference = odometry.getPoseMeters().getTranslation().getDistance(getRobotPose().getTranslation()) < OdometryConstants.MAX_DISTANCE_TO_FILTER_OUT;
-        boolean shouldUpdateByOdometry = poseDifference && !robotStalling();
+        boolean shouldUpdateByOdometry = poseDifference && !isRobotNotOnGround();
         if (shouldUpdateByOdometry) {
             poseEstimator.update(getGyroAngle(), getSwerveModulePositions());
         }
@@ -307,7 +307,7 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         return module.getLinearCurrent() > MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT - CURRENT_TOLERANCE && module.getLinearCurrent() < CURRENT_TOLERANCE + MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT;
     }
 
-    public boolean robotStalling() {
+    public boolean isRobotNotOnGround() {
 
         boolean frontLeft = isModuleAtFreeCurrent(this.frontLeft);
         boolean frontRight = isModuleAtFreeCurrent(this.frontRight);

@@ -1,40 +1,42 @@
 package edu.greenblitz.robotName.subsystems.Gyros;
 
-public class ReplayGyro implements IGyro{
+import edu.wpi.first.math.geometry.Rotation2d;
 
-    private GyroInputsAutoLogged lastInputs = new GyroInputsAutoLogged();
+public class ReplayGyro implements IBaseGyro {
+
+
     @Override
-    public void setYaw(double yaw) {
+    public void updateYaw(Rotation2d yaw) {
 
     }
 
     @Override
-    public void setPitch(double pitch) {
+    public void updatePitch(Rotation2d pitch) {
 
     }
 
     @Override
-    public void setRoll(double roll) {
+    public void updateRoll(Rotation2d roll) {
 
     }
 
     @Override
-    public double getYaw() {
-        return lastInputs.yaw;
+    public Rotation2d getYaw() {
+        return null;
     }
 
     @Override
-    public double getPitch() {
-        return lastInputs.pitch;
+    public Rotation2d getPitch() {
+        return null;
     }
 
     @Override
-    public double getRoll() {
-        return lastInputs.roll;
+    public Rotation2d getRoll() {
+        return null;
     }
 
     @Override
     public void updateInputs(GyroInputsAutoLogged inputs) {
-        lastInputs = inputs;
+
     }
 }
