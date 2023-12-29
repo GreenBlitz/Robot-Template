@@ -95,8 +95,10 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
         updateInputs(ChassisInputs);
 
         Logger.recordOutput("DriveTrain/RobotPose", getRobotPose());
+        Logger.recordOutput("DriveTrain/ModuleStates", getSwerveModuleStates());
         Logger.processInputs("DriveTrain/Chassis", ChassisInputs);
         Logger.processInputs("DriveTrain/Gyro", gyroInputs);
+
 
         updatePoseEstimationLimeLight();
         updateOdometry();
@@ -248,10 +250,9 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
     }
 
     public ChassisSpeeds getChassisSpeeds() {
-        return kinematics.toChassisSpeeds(getModuleState(Module.FRONT_LEFT),
-                getModuleState(Module.FRONT_RIGHT),
-                getModuleState(Module.BACK_LEFT),
-                getModuleState(Module.BACK_RIGHT));
+        return kinematics.toChassisSpeeds(
+                getSwerveModuleStates()
+        );
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
@@ -261,6 +262,14 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
                 backLeft.getCurrentPosition(),
                 backRight.getCurrentPosition()
         };
+    }
+
+    public SwerveModuleState[] getSwerveModuleStates(){
+        SwerveModuleState[] moduleStates = new SwerveModuleState[Module.values().length];
+        for (Module module : Module.values()) {
+            moduleStates[module.ordinal()] = getModuleState(module);
+        }
+        return moduleStates;
     }
 
     public SwerveDriveKinematics getKinematics() {
