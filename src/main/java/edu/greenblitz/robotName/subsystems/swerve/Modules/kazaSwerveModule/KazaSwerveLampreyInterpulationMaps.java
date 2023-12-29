@@ -1,4 +1,4 @@
-package edu.greenblitz.robotName.subsystems.swerve;
+package edu.greenblitz.robotName.subsystems.swerve.Modules.kazaSwerveModule;
 
 
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
@@ -8,7 +8,7 @@ import edu.wpi.first.math.interpolation.InverseInterpolator;
 
 import java.util.HashMap;
 
-public class Calibration {
+public class KazaSwerveLampreyInterpulationMaps {
 	
 	
 	public static final InterpolatingTreeMap<Double, Double> FRONT_LEFT= new InterpolatingTreeMap<>(
@@ -530,7 +530,7 @@ public class Calibration {
 		FRONT_RIGHT.put(4.893798327, 3.0);
 		FRONT_RIGHT.put(4.9157709810000005, 2.0);
 		FRONT_RIGHT.put(4.934081526, 1.0);
-		Calibration.FRONT_RIGHT.put(5.0, 1.0);
+		KazaSwerveLampreyInterpulationMaps.FRONT_RIGHT.put(5.0, 1.0);
 	}
 	
 	public static InterpolatingTreeMap<Double, Double> BACK_LEFT = new InterpolatingTreeMap<>(

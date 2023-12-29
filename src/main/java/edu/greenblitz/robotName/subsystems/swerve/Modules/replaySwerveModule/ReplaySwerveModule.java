@@ -1,14 +1,18 @@
-package edu.greenblitz.robotName.subsystems.swerve.Modules;
+package edu.greenblitz.robotName.subsystems.swerve.Modules.replaySwerveModule;
 
 
-public class ReplaySwerveModule implements ISwerveModule{
+import edu.greenblitz.robotName.subsystems.swerve.Modules.ISwerveModule;
+import edu.greenblitz.robotName.subsystems.swerve.Modules.SwerveModuleInputsAutoLogged;
+import edu.wpi.first.math.geometry.Rotation2d;
+
+public class ReplaySwerveModule implements ISwerveModule {
     @Override
     public void setLinearVelocity(double speed) {
 
     }
 
     @Override
-    public void rotateToAngle(double angleInRadians) {
+    public void rotateToAngle(Rotation2d angle) {
 
     }
 
@@ -33,7 +37,7 @@ public class ReplaySwerveModule implements ISwerveModule{
     }
 
     @Override
-    public void resetAngle(double angleInRads) {
+    public void resetAngle(Rotation2d angle) {
 
     }
 

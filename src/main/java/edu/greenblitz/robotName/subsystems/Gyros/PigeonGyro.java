@@ -1,63 +1,50 @@
 package edu.greenblitz.robotName.subsystems.Gyros;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
+import edu.wpi.first.math.geometry.Rotation2d;
 
-public class PigeonGyro implements IGyro {
+public class PigeonGyro implements IAngleMeasurementGyro {
 
-	private PigeonIMU pigeonIMU;
-	double yawOffset = 0.0;
-	double pitchOffset = 0.0;
-	double rollOffset = 0.0;
+    private PigeonIMU pigeonIMU;
+    Rotation2d yawOffset;
+    Rotation2d pitchOffset;
+    Rotation2d rollOffset;
 
-	private GyroInputsAutoLogged lastInputs = new GyroInputsAutoLogged();
-	public PigeonGyro(int id) {
-		this.pigeonIMU = new PigeonIMU(id);
-	}
-	
-	/**
-	 * the offset sets himself the current angle + the offset
-	 * because idk but we do it like this
-	 * <p>
-	 * ALL IN RADIANS
-	 */
-	
-	
-	@Override
-	public void setYaw(double yaw) {
-		yawOffset += (yaw + getYaw());
-	}
+    private GyroInputsAutoLogged lastInputs = new GyroInputsAutoLogged();
 
-	@Override
-	public void setPitch(double pitch) {
-		pitchOffset += (pitch + getPitch());
-	}
+    public PigeonGyro(int id) {
+        this.pigeonIMU = new PigeonIMU(id);
+    }
 
-	@Override
-	public void setRoll(double roll) {
-		rollOffset += (roll + getRoll());
-	}
+    /**
+     * the offset sets himself the current angle + the offset
+     * because idk but we do it like this
+     * <p>
+     * ALL IN RADIANS
+     */
 
-	@Override
-	public double getYaw() {
-		return lastInputs.yaw;
-	}
-	
-	@Override
-	public double getPitch() {
-		return lastInputs.pitch;
-	}
-	
-	@Override
-	public double getRoll() {
-		return lastInputs.roll;
-	}
 
-	@Override
-	public void updateInputs(GyroInputsAutoLogged inputs) {
-		inputs.yaw = -((Math.toRadians(pigeonIMU.getYaw()) - yawOffset)%(2* Math.PI));
-		inputs.pitch = ((Math.toRadians(pigeonIMU.getPitch()) - pitchOffset)%( 2 * Math.PI));
-		inputs.roll = ((Math.toRadians(pigeonIMU.getRoll()) - rollOffset)%(2* Math.PI));
+    @Override
+    public void updateYaw(Rotation2d yaw) {
+        yawOffset.plus(yaw.plus(Rotation2d.fromRadians(lastInputs.yaw)));
+    }
 
-		lastInputs = inputs;
-	}
+    @Override
+    public void updatePitch(Rotation2d pitch) {
+        pitchOffset.plus(pitch.plus(Rotation2d.fromRadians(lastInputs.pitch)));
+    }
+
+    @Override
+    public void updateRoll(Rotation2d roll) {
+        rollOffset.plus(roll.plus(Rotation2d.fromRadians(lastInputs.roll)));
+    }
+
+    @Override
+    public void updateInputs(GyroInputsAutoLogged inputs) {
+        inputs.yaw = (Math.toRadians(pigeonIMU.getYaw()) - yawOffset.getRadians()) % (2 * Math.PI);
+        inputs.pitch = (Math.toRadians(pigeonIMU.getPitch()) - pitchOffset.getRadians()) % (2 * Math.PI);
+        inputs.roll = (Math.toRadians(pigeonIMU.getRoll()) - rollOffset.getRadians()) % (2 * Math.PI);
+
+        lastInputs = inputs;
+    }
 }

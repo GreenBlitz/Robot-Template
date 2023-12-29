@@ -1,27 +1,25 @@
-package edu.greenblitz.robotName.subsystems.swerve.Modules;
+package edu.greenblitz.robotName.subsystems.swerve.Modules.kazaSwerveModule;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.greenblitz.robotName.RobotConstants;
-import edu.greenblitz.robotName.subsystems.swerve.Calibration;
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
+import edu.greenblitz.robotName.subsystems.swerve.Modules.ISwerveModule;
+import edu.greenblitz.robotName.subsystems.swerve.Modules.SwerveModuleInputsAutoLogged;
 import edu.greenblitz.robotName.subsystems.swerve.SwerveModuleConfigObject;
-import edu.greenblitz.robotName.subsystems.swerve.constants.KazaSwerveConstants;
 import edu.greenblitz.robotName.utils.Conversions;
 import edu.greenblitz.robotName.utils.motors.GBSparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 import static edu.greenblitz.robotName.RobotConstants.General.Motors.NEO_PHYSICAL_TICKS_TO_RADIANS;
 
-public class KazaSwerveModule implements ISwerveModule{
+public class KazaSwerveModule implements ISwerveModule {
 
-    private double targetAngle;
-    private double targetVel;
-    private GBSparkMax angleMotor;
-    private GBSparkMax linearMotor;
-    private AnalogInput lamprey;
-    private SimpleMotorFeedforward feedforward;
+    private final GBSparkMax angleMotor;
+    private final GBSparkMax linearMotor;
+    private final AnalogInput lamprey;
+    private final SimpleMotorFeedforward linearFeedForward;
     SwerveChassis.Module module;
 
     public KazaSwerveModule (SwerveChassis.Module module){
@@ -33,24 +31,13 @@ public class KazaSwerveModule implements ISwerveModule{
         boolean linInverted;
         this.module = module;
 
-        SwerveModuleConfigObject configObject;
-
-        switch (module){
-            case BACK_RIGHT:
-                configObject = KazaSwerveConstants.KazaModuleBackRight;
-                break;
-            case BACK_LEFT:
-                configObject = KazaSwerveConstants.KazaModuleBackLeft;
-                break;
-            case FRONT_RIGHT:
-                configObject = KazaSwerveConstants.KazaModuleFrontRight;
-                break;
-            case FRONT_LEFT:
-                configObject = KazaSwerveConstants.KazaModuleFrontLeft;
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid module");
-        }
+        SwerveModuleConfigObject configObject = switch (module) {
+            case BACK_RIGHT -> KazaSwerveConstants.KAZA_SWERVE_MODULE_BACK_RIGHT;
+            case BACK_LEFT -> KazaSwerveConstants.KAZA_SWERVE_MODULE_BACK_LEFT;
+            case FRONT_RIGHT -> KazaSwerveConstants.KAZA_SWERVE_MODULE_FRONT_RIGHT;
+            case FRONT_LEFT -> KazaSwerveConstants.KAZA_SWERVE_MODULE_FRONT_LEFT;
+            default -> throw new IllegalArgumentException("Invalid swerve module");
+        };
 
         angleMotorID = configObject.angleMotorID;
         linearMotorID = configObject.linearMotorID;
@@ -58,17 +45,17 @@ public class KazaSwerveModule implements ISwerveModule{
         linInverted = configObject.linInverted;
 
         angleMotor = new GBSparkMax(angleMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        angleMotor.config(KazaSwerveConstants.baseAngConfObj);
+        angleMotor.config(KazaSwerveConstants.BASE_ANGULAR_MOTOR_CONFIG_OBJECT);
         angleMotor.getPIDController().setPositionPIDWrappingEnabled(true);
         angleMotor.getPIDController().setPositionPIDWrappingMaxInput(2* Math.PI);
         angleMotor.getPIDController().setPositionPIDWrappingMinInput(0);
 
         linearMotor = new GBSparkMax(linearMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        linearMotor.config(KazaSwerveConstants.baseLinConfObj.withInverted(linInverted));
+        linearMotor.config(KazaSwerveConstants.BASE_LINEAR_CONFIG_OBJECT.withInverted(linInverted));
 
         lamprey = new AnalogInput(lampreyID);
         lamprey.setAverageBits(KazaSwerveConstants.LAMPREY_AVERAGE_BITS);
-        this.feedforward = new SimpleMotorFeedforward(KazaSwerveConstants.ks, KazaSwerveConstants.kv, KazaSwerveConstants.ka);
+        this.linearFeedForward = new SimpleMotorFeedforward(KazaSwerveConstants.ks, KazaSwerveConstants.kv, KazaSwerveConstants.ka);
 
 
     }
@@ -76,13 +63,12 @@ public class KazaSwerveModule implements ISwerveModule{
 
     @Override
     public void setLinearVelocity(double speed) {
-        linearMotor.getPIDController().setReference(speed, CANSparkMax.ControlType.kVelocity);
+        linearMotor.getPIDController().setReference(speed, CANSparkMax.ControlType.kVelocity, 0, linearFeedForward.calculate(speed));
     }
 
     @Override
-    public void rotateToAngle(double angleInRadians) {
-        angleMotor.getPIDController().setReference(angleInRadians, CANSparkMax.ControlType.kPosition);
-        targetAngle = angleInRadians;
+    public void rotateToAngle(Rotation2d angle) {
+        angleMotor.getPIDController().setReference(angle.getRadians(), CANSparkMax.ControlType.kPosition);
     }
 
     @Override
@@ -106,8 +92,8 @@ public class KazaSwerveModule implements ISwerveModule{
     }
 
     @Override
-    public void resetAngle(double angleInRads) {
-        angleMotor.getEncoder().setPosition(angleInRads);
+    public void resetAngle(Rotation2d angle) {
+        angleMotor.getEncoder().setPosition(angle.getRadians());
     }
 
     @Override
@@ -118,7 +104,7 @@ public class KazaSwerveModule implements ISwerveModule{
 
     @Override
     public void updateInputs(SwerveModuleInputsAutoLogged inputs) {
-        inputs.absoluteEncoderPosition = Calibration.CALIBRATION_DATASETS.get(module).get(lamprey.getVoltage()) * NEO_PHYSICAL_TICKS_TO_RADIANS/ KazaSwerveConstants.ANG_GEAR_RATIO;
+        inputs.absoluteEncoderPosition = KazaSwerveLampreyInterpulationMaps.CALIBRATION_DATASETS.get(module).get(lamprey.getVoltage()) * NEO_PHYSICAL_TICKS_TO_RADIANS/ KazaSwerveConstants.ANGULAR_GEAR_RATIO;
         inputs.isAbsoluteEncoderConnected = lamprey.getVoltage() != 0; //analog input returns 0;
 
         inputs.linearCurrent = linearMotor.getOutputCurrent();
@@ -127,11 +113,11 @@ public class KazaSwerveModule implements ISwerveModule{
         inputs.linearVoltage = linearMotor.getAppliedOutput();
         inputs.angularVoltage = angleMotor.getAppliedOutput();
 
-        inputs.linearVelocity = Conversions.convertRPMToRadsPerSec(linearMotor.getEncoder().getVelocity() * KazaSwerveConstants.angleTicksToWheelToRPM);
-        inputs.angularVelocity = angleMotor.getEncoder().getVelocity() * KazaSwerveConstants.angleTicksToRadians;
+        inputs.linearVelocity = Conversions.convertRPMToRadiansPerSec(linearMotor.getEncoder().getVelocity() * KazaSwerveConstants.ANGULAR_TICKS_TO_WHEEL_TO_RPM);
+        inputs.angularVelocity = angleMotor.getEncoder().getVelocity();
 
         inputs.linearMetersPassed = linearMotor.getEncoder().getPosition();
-        inputs.angularPositionInRads = angleMotor.getEncoder().getPosition();
+        inputs.angularPositionRadians = angleMotor.getEncoder().getPosition();
 
 
     }

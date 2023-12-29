@@ -14,7 +14,7 @@ public class SwerveModuleInputs {
     public double linearCurrent;
     public double angularCurrent;
 
-    public double angularPositionInRads;
+    public double angularPositionRadians;
     public double linearMetersPassed;
 
     public double absoluteEncoderPosition;

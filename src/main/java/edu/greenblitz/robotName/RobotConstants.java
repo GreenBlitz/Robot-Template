@@ -2,11 +2,9 @@ package edu.greenblitz.robotName;
 
 import edu.wpi.first.math.geometry.Translation3d;
 
-import javax.swing.plaf.PanelUI;
-
 public class RobotConstants {
 	
-	public static final Robot.RobotType ROBOT_TYPE = Robot.RobotType.FRANKENSTEIN;
+	public static final Robot.RobotType ROBOT_TYPE = Robot.RobotType.ROBOT_NAME;
 	public static final String SIMULATION_LOG_PATH = System.getProperty("user.home") + "\\Desktop\\SimulationLogs";
 	public static final String ROBORIO_LOG_PATH = "/media/sda1/";
 	
@@ -42,8 +40,8 @@ public class RobotConstants {
 		public static final Translation3d ARM_TO_ROBOT = new Translation3d(0,0,1.2);
 	}
 	public static class Joystick{
-		public static final int MAIN = 1;
-		public static final int SECOND = 0;
+		public static final int MAIN = 0;
+		public static final int SECOND = 1;
 
 	}
 }
