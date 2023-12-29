@@ -5,14 +5,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import org.littletonrobotics.junction.Logger;
 
 public class TunableNumber {
-    private double defaultValue = 0;
+    private final double defaultValue;
     private final GenericEntry networkTableEntry;
     protected double value;
-    private String widgetTitle;
+    private final String widgetTitle;
 
     public TunableNumber(String widgetTitle, String shuffleBoardTabTitle) {
         this.widgetTitle = widgetTitle;
-        value = defaultValue;
+        this.defaultValue = 0;
+        this.value = defaultValue;
 
         networkTableEntry = Shuffleboard.getTab(shuffleBoardTabTitle).add(widgetTitle, defaultValue).getEntry();
     }
@@ -20,7 +21,7 @@ public class TunableNumber {
     public TunableNumber(String widgetTitle, String shuffleBoardTabTitle, double defaultValue) {
         this.widgetTitle = widgetTitle;
         this.defaultValue = defaultValue;
-        value = defaultValue;
+        this.value = defaultValue;
 
         networkTableEntry = Shuffleboard.getTab(shuffleBoardTabTitle).add(widgetTitle, defaultValue).getEntry();
     }
