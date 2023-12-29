@@ -34,7 +34,6 @@ public class Robot extends LoggedRobot {
         OI.getInstance();
         CommandScheduler.getInstance().enable();
     }
-
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
