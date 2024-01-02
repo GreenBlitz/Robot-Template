@@ -14,6 +14,11 @@ public class PigeonGyro implements IAngleMeasurementGyro {
 
     public PigeonGyro(int id) {
         this.pigeonIMU = new PigeonIMU(id);
+        this.pitchOffset = new Rotation2d();
+        this.rollOffset = new Rotation2d();
+        this.yawOffset = new Rotation2d();
+
+
     }
 
     /**
