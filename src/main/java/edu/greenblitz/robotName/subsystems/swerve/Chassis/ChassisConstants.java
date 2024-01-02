@@ -25,4 +25,8 @@ public class ChassisConstants {
 
     public static final double DRIVER_ANGULAR_SPEED_FACTOR_SLOW = MAX_ANGULAR_SPEED / 4;
     public static final double DRIVER_LINEAR_SPEED_FACTOR_SLOW = 0.5;
+
+    public static final boolean ANGULAR_JOYSTICK_INVERTED = true;
+    public static final boolean LINEAR_JOYSTICK_INVERTED = false;
+
 }

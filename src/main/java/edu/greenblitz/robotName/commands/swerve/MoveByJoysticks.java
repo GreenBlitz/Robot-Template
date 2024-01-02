@@ -63,6 +63,7 @@ public class MoveByJoysticks extends SwerveCommand {
             swerveChassis.stop();
             return;
         }
+
         swerveChassis.moveByChassisSpeeds(
                 forwardSpeed,
                 leftwardSpeed,
