@@ -14,9 +14,9 @@ public class SwerveChassisUtils {
 
     public static double joystickValueToAngularVelocity(double joystickValue, double velocityFactor) {
         if (Math.abs(joystickValue * velocityFactor) < velocityFactor) {
-            return joystickValue * velocityFactor;
+            return -joystickValue * velocityFactor;
         } else {
-            return velocityFactor;
+            return -velocityFactor;
         }
     }
 
