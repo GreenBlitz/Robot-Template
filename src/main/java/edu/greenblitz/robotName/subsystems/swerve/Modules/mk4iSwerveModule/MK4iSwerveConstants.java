@@ -1,9 +1,6 @@
 package edu.greenblitz.robotName.subsystems.swerve.Modules.mk4iSwerveModule;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import com.ctre.phoenix6.configs.*;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.greenblitz.robotName.RobotConstants;
@@ -32,11 +29,8 @@ public class MK4iSwerveConstants {
 	public static final double LINEAR_TICKS_TO_METERS_PER_SECOND = RobotConstants.General.Motors.FALCON_VELOCITY_UNITS_PER_RPM / LINEAR_GEAR_RATIO * WHEEL_CIRCUMFERENCE / 60;
 	public static final double ANGLE_TICKS_TO_RADIANS = RobotConstants.General.Motors.FALCON_TICKS_PER_RADIAN / ANGULAR_GEAR_RATIO;
 	public static final double MAG_ENCODER_TICKS_TO_FALCON_TICKS = 2 * Math.PI / ANGLE_TICKS_TO_RADIANS;
-	
-	public static final PIDObject ANGULAR_PID = new PIDObject().withKp(0.05).withMaxPower(1.0).withFF(0);
-	public static final GBFalcon.FalconConfObject ANGULAR_FALCON_CONFIG_OBJECT = new GBFalcon.FalconConfObject().withNeutralMode(NeutralMode.Brake).withCurrentLimit(30).withRampRate(RobotConstants.General.RAMP_RATE_VAL).withInverted(true).withPID(ANGULAR_PID);
 
-	public static final TalonFXConfiguration ANGULAR_FALCON_CONF_OBJECT = new TalonFXConfiguration();
+	public static final TalonFXConfiguration ANGULAR_FALCON_CONFIG_OBJECT = new TalonFXConfiguration();
 	static {
 		Slot0Configs PID_CONFIGS = new Slot0Configs();
 		PID_CONFIGS.kP = 0.05;
@@ -62,14 +56,14 @@ public class MK4iSwerveConstants {
 		MOTION_MAGIC_CONFIGS.MotionMagicCruiseVelocity = 2;
 		MOTION_MAGIC_CONFIGS.MotionMagicJerk = 2;
 
-		ANGULAR_FALCON_CONF_OBJECT.Slot0 = PID_CONFIGS;
-		ANGULAR_FALCON_CONF_OBJECT.CurrentLimits = CURRENT_LIMITS_CONFIGS;
-		ANGULAR_FALCON_CONF_OBJECT.ClosedLoopRamps = CLOSED_LOOP_RAMPS_CONFIGS;
-		ANGULAR_FALCON_CONF_OBJECT.MotorOutput = MOTOR_OUTPUT_CONFIGS;
-		ANGULAR_FALCON_CONF_OBJECT.MotionMagic = MOTION_MAGIC_CONFIGS;
+		ANGULAR_FALCON_CONFIG_OBJECT.Slot0 = PID_CONFIGS;
+		ANGULAR_FALCON_CONFIG_OBJECT.CurrentLimits = CURRENT_LIMITS_CONFIGS;
+		ANGULAR_FALCON_CONFIG_OBJECT.ClosedLoopRamps = CLOSED_LOOP_RAMPS_CONFIGS;
+		ANGULAR_FALCON_CONFIG_OBJECT.MotorOutput = MOTOR_OUTPUT_CONFIGS;
+		ANGULAR_FALCON_CONFIG_OBJECT.MotionMagic = MOTION_MAGIC_CONFIGS;
 
 	}
-	public static final TalonFXConfiguration LINEAR_FALCON_CONF_OBJECT = new TalonFXConfiguration();
+	public static final TalonFXConfiguration LINEAR_FALCON_CONFIG_OBJECT = new TalonFXConfiguration();
 	static {
 		Slot0Configs PID_CONFIGS = new Slot0Configs();
 		PID_CONFIGS.kP = 0.0003;
@@ -93,11 +87,11 @@ public class MK4iSwerveConstants {
 		MotorOutputConfigs MOTOR_OUTPUT_CONFIGS = new MotorOutputConfigs();
 		MOTOR_OUTPUT_CONFIGS.NeutralMode = NeutralModeValue.Brake;
 
-		LINEAR_FALCON_CONF_OBJECT.Slot0 = PID_CONFIGS;
-		LINEAR_FALCON_CONF_OBJECT.CurrentLimits = CURRENT_LIMITS_CONFIGS;
-		LINEAR_FALCON_CONF_OBJECT.ClosedLoopRamps = CLOSED_LOOP_RAMPS_CONFIGS;
-		LINEAR_FALCON_CONF_OBJECT.TorqueCurrent = TORQUE_CURRENT_CONFIGS;
-		LINEAR_FALCON_CONF_OBJECT.MotorOutput = MOTOR_OUTPUT_CONFIGS;
+		LINEAR_FALCON_CONFIG_OBJECT.Slot0 = PID_CONFIGS;
+		LINEAR_FALCON_CONFIG_OBJECT.CurrentLimits = CURRENT_LIMITS_CONFIGS;
+		LINEAR_FALCON_CONFIG_OBJECT.ClosedLoopRamps = CLOSED_LOOP_RAMPS_CONFIGS;
+		LINEAR_FALCON_CONFIG_OBJECT.TorqueCurrent = TORQUE_CURRENT_CONFIGS;
+		LINEAR_FALCON_CONFIG_OBJECT.MotorOutput = MOTOR_OUTPUT_CONFIGS;
 
 
 

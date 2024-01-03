@@ -1,14 +1,9 @@
 package edu.greenblitz.robotName.subsystems.swerve.Modules.mk4iSwerveModule;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.controls.MotionMagicExpoDutyCycle;
-import com.ctre.phoenix6.controls.MotionMagicExpoTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -18,15 +13,15 @@ import edu.greenblitz.robotName.subsystems.swerve.Modules.ISwerveModule;
 import edu.greenblitz.robotName.subsystems.swerve.Modules.SwerveModuleInputsAutoLogged;
 import edu.greenblitz.robotName.subsystems.swerve.SwerveModuleConfigObject;
 import edu.greenblitz.robotName.utils.Conversions;
-import edu.greenblitz.robotName.utils.motors.GBFalcon;
+import edu.greenblitz.robotName.utils.motors.GBTalonFXPro;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 
 public class MK4ISwerveModule implements ISwerveModule {
 
-    private final TalonFX angularMotor;
-    private final TalonFX linearMotor;
+    private final GBTalonFXPro angularMotor;
+    private final GBTalonFXPro linearMotor;
     private final CANCoder canCoder;
     private final SimpleMotorFeedforward linearFeedForward;
     private final double encoderOffset;
@@ -45,11 +40,11 @@ public class MK4ISwerveModule implements ISwerveModule {
             default -> throw new IllegalArgumentException("Invalid swerve module");
         };
 
-        angularMotor = new TalonFX(configObject.angleMotorID);
-        angularMotor.getConfigurator().apply(MK4iSwerveConstants.ANGULAR_FALCON_CONF_OBJECT);
+        angularMotor = new GBTalonFXPro(configObject.angleMotorID);
+        angularMotor.getConfigurator().apply(MK4iSwerveConstants.ANGULAR_FALCON_CONFIG_OBJECT);
 
-        linearMotor = new TalonFX(configObject.linearMotorID);
-        linearMotor.getConfigurator().apply(MK4iSwerveConstants.LINEAR_FALCON_CONF_OBJECT);
+        linearMotor = new GBTalonFXPro(configObject.linearMotorID);
+        linearMotor.getConfigurator().apply(MK4iSwerveConstants.LINEAR_FALCON_CONFIG_OBJECT);
         linearMotor.setInverted(configObject.linInverted);
 
         canCoder = new CANCoder(configObject.AbsoluteEncoderID);
@@ -58,6 +53,8 @@ public class MK4ISwerveModule implements ISwerveModule {
         FEEDBACK_CONFIGS.FeedbackRemoteSensorID = canCoder.getDeviceID();
         FEEDBACK_CONFIGS.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
         FEEDBACK_CONFIGS.RotorToSensorRatio = MK4iSwerveConstants.ANGULAR_GEAR_RATIO;
+
+        angularMotor.getConfigurator().refresh(FEEDBACK_CONFIGS);
 
         this.encoderOffset = configObject.encoderOffset.getRotations();
 
@@ -82,7 +79,7 @@ public class MK4ISwerveModule implements ISwerveModule {
 
     @Override
     public void setAngularVoltage(double voltage) {
-        angularMotor.set(voltage);
+        angularMotor.setVoltage(voltage);
     }
 
     @Override
@@ -97,10 +94,7 @@ public class MK4ISwerveModule implements ISwerveModule {
 
     @Override
     public void resetAngle(Rotation2d angle) {
-//        angularMotor.(Conversions.MK4IConversions.convertRadiansToTicks(angle));
-        angularMotor.getConfigurator().refresh(
-                MK4iSwerveConstants.ANGULAR_FALCON_CONF_OBJECT.Feedback.withFeedbackRotorOffset(Conversions.MK4IConversions.convertRadiansToTicks(angle))
-        );
+        angularMotor.setPosition(angle.getRotations());
     }
 
 
