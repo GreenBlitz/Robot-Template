@@ -6,18 +6,22 @@ public class SwerveChassisUtils {
 
 
     public static double joystickValueToLinearVelocity(double joystickValue, double velocityFactor) {
+        double factoredOutputValue;
         if (Math.abs(joystickValue * velocityFactor) < velocityFactor) {
-            return joystickValue * velocityFactor * (ChassisConstants.LINEAR_JOYSTICK_INVERTED ? -1 : 1);
+            factoredOutputValue = joystickValue * velocityFactor;
         } else {
-            return velocityFactor * (ChassisConstants.LINEAR_JOYSTICK_INVERTED ? -1 : 1);
+            factoredOutputValue = velocityFactor;
         }
+        return factoredOutputValue * (ChassisConstants.LINEAR_JOYSTICK_INVERTED ? -1 : 1);
     }
 
     public static double joystickValueToAngularVelocity(double joystickValue, double velocityFactor) {
+        double factoredOutputValue;
         if (Math.abs(joystickValue * velocityFactor) < velocityFactor) {
-            return joystickValue * velocityFactor  * (ChassisConstants.ANGULAR_JOYSTICK_INVERTED ? -1 : 1);
+            factoredOutputValue = joystickValue * velocityFactor;
         } else {
-            return velocityFactor * (ChassisConstants.ANGULAR_JOYSTICK_INVERTED ? -1 : 1);
+            factoredOutputValue = velocityFactor;
         }
+        return factoredOutputValue * (ChassisConstants.ANGULAR_JOYSTICK_INVERTED ? -1 : 1);
     }
 }
