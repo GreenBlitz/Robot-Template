@@ -97,8 +97,9 @@ public class SwerveModule {
     }
 
     public void setModuleState(SwerveModuleState moduleState) {
-        setLinearVelocity(moduleState.speedMetersPerSecond);
-        rotateToAngle(moduleState.angle);
+        SwerveModuleState optimizedModuleState = SwerveModuleState.optimize(moduleState,getModuleAngle());
+        setLinearVelocity(optimizedModuleState.speedMetersPerSecond);
+        rotateToAngle(optimizedModuleState.angle);
     }
 
     public Rotation2d getAbsoluteEncoderPosition() {

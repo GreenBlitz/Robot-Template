@@ -1,23 +1,27 @@
 package edu.greenblitz.robotName.subsystems.swerve;
 
-import java.util.Scanner;
-import java.util.function.DoubleSupplier;
-
+import edu.greenblitz.robotName.subsystems.swerve.Chassis.ChassisConstants;
 public class SwerveChassisUtils {
+
+
+
     public static double joystickValueToLinearVelocity(double joystickValue, double velocityFactor) {
+        double factoredOutputValue;
         if (Math.abs(joystickValue * velocityFactor) < velocityFactor) {
-            return joystickValue * velocityFactor;
+            factoredOutputValue = joystickValue * velocityFactor;
         } else {
-            return velocityFactor;
+            factoredOutputValue = velocityFactor;
         }
+        return factoredOutputValue * (ChassisConstants.LINEAR_JOYSTICK_INVERTED ? -1 : 1);
     }
 
     public static double joystickValueToAngularVelocity(double joystickValue, double velocityFactor) {
+        double factoredOutputValue;
         if (Math.abs(joystickValue * velocityFactor) < velocityFactor) {
-            return joystickValue * velocityFactor;
+            factoredOutputValue = joystickValue * velocityFactor;
         } else {
-            return velocityFactor;
+            factoredOutputValue = velocityFactor;
         }
+        return factoredOutputValue * (ChassisConstants.ANGULAR_JOYSTICK_INVERTED ? -1 : 1);
     }
-
 }
