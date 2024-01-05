@@ -26,6 +26,7 @@ public class MK4iSwerveConstants {
 	public static final double ANGLE_TICKS_TO_WHEEL_TO_RPM = RobotConstants.General.Motors.FALCON_VELOCITY_UNITS_PER_RPM / ANGULAR_GEAR_RATIO;
 	public static final double LINEAR_TICKS_TO_METERS_PER_SECOND = RobotConstants.General.Motors.FALCON_VELOCITY_UNITS_PER_RPM / LINEAR_GEAR_RATIO * WHEEL_CIRCUMFERENCE / 60;
 	public static final double ANGLE_TICKS_TO_RADIANS = RobotConstants.General.Motors.FALCON_TICKS_PER_RADIAN / ANGULAR_GEAR_RATIO;
+	public static final double COUPLING_RATIO = 1.0;
 	public static final double MAG_ENCODER_TICKS_TO_FALCON_TICKS = 2 * Math.PI / ANGLE_TICKS_TO_RADIANS;
 	
 	public static final PIDObject ANGULAR_PID = new PIDObject().withKp(0.05).withMaxPower(1.0).withFF(0);

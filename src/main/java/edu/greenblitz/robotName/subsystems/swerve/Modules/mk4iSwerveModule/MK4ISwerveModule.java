@@ -10,6 +10,7 @@ import edu.greenblitz.robotName.subsystems.swerve.Chassis.SwerveChassis;
 import edu.greenblitz.robotName.subsystems.swerve.Modules.ISwerveModule;
 import edu.greenblitz.robotName.subsystems.swerve.Modules.SwerveModuleInputsAutoLogged;
 import edu.greenblitz.robotName.subsystems.swerve.SwerveModuleConfigObject;
+import edu.greenblitz.robotName.subsystems.swerve.SwerveUtils;
 import edu.greenblitz.robotName.utils.Conversions;
 import edu.greenblitz.robotName.utils.motors.GBFalcon;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -105,7 +106,12 @@ public class MK4ISwerveModule implements ISwerveModule {
         inputs.linearCurrent = linearMotor.getSupplyCurrent();
         inputs.angularCurrent = angularMotor.getStatorCurrent();
 
-        inputs.linearMetersPassed = Conversions.MK4IConversions.convertTicksToMeters(linearMotor.getSelectedSensorPosition());
+        inputs.linearMetersPassed = SwerveUtils.getCouplingCompensatedDistance(
+                Rotation2d.fromRadians(Conversions.MK4IConversions.convertTicksToRadians(linearMotor.getSelectedSensorPosition())),
+                Conversions.MK4IConversions.convertTicksToMeters(linearMotor.getSelectedSensorPosition()),
+                MK4iSwerveConstants.COUPLING_RATIO
+        );
+
         inputs.angularPositionRadians = Conversions.MK4IConversions.convertTicksToRadians(angularMotor.getSelectedSensorPosition());
 
         if (Double.isNaN(Units.degreesToRadians(canCoder.getAbsolutePosition()))){
