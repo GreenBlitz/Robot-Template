@@ -1,7 +1,9 @@
 package edu.greenblitz.robotName.subsystems.swerve;
 
 import edu.greenblitz.robotName.subsystems.swerve.Chassis.ChassisConstants;
-public class SwerveChassisUtils {
+import edu.wpi.first.math.geometry.Rotation2d;
+
+public class SwerveUtils {
 
 
 
@@ -23,5 +25,12 @@ public class SwerveChassisUtils {
             factoredOutputValue = velocityFactor;
         }
         return factoredOutputValue * (ChassisConstants.ANGULAR_JOYSTICK_INVERTED ? -1 : 1);
+    }
+
+    /**
+     * @param modulePosition the position of the motor (with gear ratio) in rotations
+     * */
+    public static double getCouplingCompensatedDistance (Rotation2d modulePosition, double distance, double couplingRatio) {
+        return distance - modulePosition.getRotations() * couplingRatio;
     }
 }
