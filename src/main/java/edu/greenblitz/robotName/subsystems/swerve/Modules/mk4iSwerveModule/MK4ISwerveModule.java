@@ -106,13 +106,14 @@ public class MK4ISwerveModule implements ISwerveModule {
         inputs.linearCurrent = linearMotor.getSupplyCurrent();
         inputs.angularCurrent = angularMotor.getStatorCurrent();
 
+        inputs.angularPositionRadians = Conversions.MK4IConversions.convertTicksToRadians(angularMotor.getSelectedSensorPosition());
+        inputs.linearMetersPassed = Conversions.MK4IConversions.convertTicksToMeters(linearMotor.getSelectedSensorPosition());
+
         inputs.linearMetersPassed = SwerveUtils.getCouplingCompensatedDistance(
-                Rotation2d.fromRadians(Conversions.MK4IConversions.convertTicksToRadians(linearMotor.getSelectedSensorPosition())),
-                Conversions.MK4IConversions.convertTicksToMeters(linearMotor.getSelectedSensorPosition()),
+                Rotation2d.fromRadians(inputs.angularPositionRadians),
+                inputs.linearMetersPassed,
                 MK4iSwerveConstants.COUPLING_RATIO
         );
-
-        inputs.angularPositionRadians = Conversions.MK4IConversions.convertTicksToRadians(angularMotor.getSelectedSensorPosition());
 
         if (Double.isNaN(Units.degreesToRadians(canCoder.getAbsolutePosition()))){
             inputs.absoluteEncoderPosition = 0;
