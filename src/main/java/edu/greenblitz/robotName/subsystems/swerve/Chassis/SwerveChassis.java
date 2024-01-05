@@ -18,7 +18,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.littletonrobotics.junction.Logger;
@@ -320,17 +323,31 @@ public class SwerveChassis extends GBSubsystem implements ISwerveChassis {
     }
 
     private boolean isModuleAtFreeCurrent(SwerveModule module) {
-        return module.getLinearCurrent() > MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT - CURRENT_TOLERANCE && module.getLinearCurrent() < CURRENT_TOLERANCE + MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT;
+        return module.getLinearCurrent() < MK4iSwerveConstants.LINEAR_MOTOR_FREE_CURRENT + CURRENT_TOLERANCE;
     }
 
     public boolean isRobotOnGround() {
 
-        boolean frontLeft = isModuleAtFreeCurrent(this.frontLeft);
-        boolean frontRight = isModuleAtFreeCurrent(this.frontRight);
-        boolean backLeft = isModuleAtFreeCurrent(this.backLeft);
-        boolean backRight = isModuleAtFreeCurrent(this.backRight);
+        boolean[] modulesFreeCurrent = new boolean[Module.values().length];
 
-        return !(((frontLeft && frontRight) || (backLeft && backRight) || (frontLeft && backLeft) || (backRight && frontRight) || (frontLeft && backRight) || (frontRight && backLeft)));
+        modulesFreeCurrent[0] = isModuleAtFreeCurrent(this.frontLeft);
+        modulesFreeCurrent[1] = isModuleAtFreeCurrent(this.frontRight);
+        modulesFreeCurrent[2]= isModuleAtFreeCurrent(this.backLeft);
+        modulesFreeCurrent[3] = isModuleAtFreeCurrent(this.backRight);
+
+        for (Module module : Module.values()) {
+            modulesFreeCurrent[module.ordinal()] = isModuleAtFreeCurrent(getModule(module));
+        }
+
+
+        for (int i = 0; i < modulesFreeCurrent.length; i++) {
+            for (int j = 1; j < modulesFreeCurrent.length - 1; j++) {
+                if(modulesFreeCurrent[i] && modulesFreeCurrent[j]){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void updateOdometry() {
